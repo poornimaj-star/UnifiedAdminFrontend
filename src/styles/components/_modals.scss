@@ -1,0 +1,121 @@
+// Custom Modal Styles
+.modal-custom {
+  .modal-dialog {
+    max-width: 450px;
+  }
+
+  .modal-content {
+    border-radius: $border-radius-lg;
+    border: none;
+    box-shadow: $box-shadow-lg;
+
+    .modal-header {
+      border-bottom: none;
+      text-align: center;
+      flex-direction: column;
+      padding: 2rem 2rem 1rem 2rem;
+
+      .modal-title {
+        font-size: 2rem;
+        font-weight: $font-weight-semibold;
+        color: $text-dark;
+        background: linear-gradient(135deg, $primary, $primary-dark);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .modal-subtitle {
+        color: $text-muted;
+        font-size: $font-size-base;
+        margin: 0.5rem 0 0 0;
+      }
+
+      .btn-close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+      }
+    }
+
+    .modal-body {
+      padding: 1rem 2rem 2rem 2rem;
+
+      .form-group {
+        @extend .mb-3;
+
+        label {
+          @extend .form-label;
+          font-weight: $font-weight-medium;
+          color: $text-dark;
+
+          .required {
+            color: $primary;
+            font-weight: $font-weight-semibold;
+          }
+        }
+
+        .form-control {
+          border-color: $border-color;
+          border-radius: $border-radius-sm;
+
+          &:focus {
+            border-color: $primary;
+            box-shadow: 0 0 0 0.2rem rgba($primary, 0.25);
+          }
+        }
+      }
+
+      .signin-btn {
+        @extend .btn, .btn-primary, .w-100;
+        background: linear-gradient(135deg, $primary, $primary-dark);
+        border: none;
+        padding: 0.875rem;
+        font-weight: $font-weight-semibold;
+        margin-top: 1rem;
+
+        &:hover {
+          background: linear-gradient(135deg, darken($primary, 5%), darken($primary-dark, 5%));
+          transform: translateY(-1px);
+        }
+      }
+
+      .forgot-password {
+        @extend .btn, .btn-link;
+        color: $primary;
+        font-size: $font-size-sm;
+        text-decoration: underline;
+        padding: 0.5rem 0;
+        margin-top: 0.5rem;
+
+        &:hover {
+          color: $primary-dark;
+        }
+      }
+
+      .signup-section {
+        @extend .text-center, .mt-4, .pt-3;
+        border-top: 1px solid $border-color;
+
+        p {
+          color: $text-muted;
+          font-size: $font-size-sm;
+          margin-bottom: 0.5rem;
+        }
+
+        .create-account-btn {
+          @extend .btn, .btn-link;
+          color: $primary;
+          font-size: $font-size-sm;
+          font-weight: $font-weight-semibold;
+          text-decoration: underline;
+          padding: 0.5rem 0;
+
+          &:hover {
+            color: $primary-dark;
+          }
+        }
+      }
+    }
+  }
+}

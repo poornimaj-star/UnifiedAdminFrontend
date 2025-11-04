@@ -1,0 +1,67 @@
+// Custom Button Styles
+.btn-primary-custom {
+  @extend .btn, .btn-primary;
+  background: linear-gradient(135deg, $primary, $primary-dark);
+  border: none;
+  font-weight: $font-weight-semibold;
+  transition: $transition-base;
+
+  &:hover {
+    background: linear-gradient(135deg, darken($primary, 5%), darken($primary-dark, 5%));
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba($primary, 0.3);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.btn-secondary-custom {
+  @extend .btn, .btn-outline-primary;
+  color: $primary;
+  border-color: $primary;
+  font-weight: $font-weight-semibold;
+  transition: $transition-base;
+
+  &:hover {
+    background-color: $primary;
+    border-color: $primary;
+    color: $white;
+    transform: translateY(-1px);
+  }
+}
+
+.cta-buttons {
+  @extend .d-flex, .gap-3, .justify-content-center, .flex-wrap;
+
+  .cta-btn {
+    @extend .btn;
+    padding: 1rem 2rem;
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
+    border-radius: $border-radius-sm;
+    transition: $transition-base;
+    min-width: 180px;
+
+    &.primary {
+      @extend .btn-primary-custom;
+    }
+
+    &.secondary {
+      @extend .btn-secondary-custom;
+    }
+  }
+}
+
+// Responsive buttons
+@include media-breakpoint-down(md) {
+  .cta-buttons {
+    @extend .flex-column, .align-items-center;
+
+    .cta-btn {
+      width: 100%;
+      max-width: 300px;
+    }
+  }
+}

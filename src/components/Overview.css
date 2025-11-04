@@ -1,0 +1,388 @@
+/* Overview Component Styles */
+.overview-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.page-header {
+  margin-bottom: 2rem;
+}
+
+.page-header h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 0.5rem 0;
+}
+
+.page-subtitle {
+  color: #666;
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Alert Banner */
+.alert-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+
+.alert-icon {
+  font-size: 1.25rem;
+  color: #856404;
+  margin-top: 0.125rem;
+}
+
+.alert-content h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #856404;
+  margin: 0 0 0.5rem 0;
+}
+
+.alert-content p {
+  color: #856404;
+  font-size: 0.875rem;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Overview Grid */
+.overview-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* Service Cards */
+.service-card {
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease;
+  min-height: 400px;
+}
+
+.service-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.5rem 1.5rem 0 1.5rem;
+}
+
+.service-icon {
+  font-size: 1.5rem;
+}
+
+.card-header h2 {
+  flex: 1;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.settings-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: #f8f9fa;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.settings-btn:hover {
+  background: #e9ecef;
+}
+
+.service-description {
+  color: #666;
+  font-size: 0.875rem;
+  margin: 0.5rem 0 1.5rem 0;
+  padding: 0 1.5rem;
+}
+
+/* Status Alert */
+.status-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  background: #fff5f5;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 0 1.5rem 1.5rem 1.5rem;
+}
+
+.alert-icon-small {
+  font-size: 1rem;
+  color: #dc2626;
+}
+
+.status-alert strong {
+  color: #dc2626;
+  font-weight: 600;
+  font-size: 0.875rem;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.status-alert p {
+  color: #dc2626;
+  font-size: 0.75rem;
+  margin: 0;
+}
+
+/* Progress Section */
+.progress-section {
+  padding: 1rem 1.5rem;
+  margin-bottom: 0;
+  border-bottom: 1px solid #f1f3f4;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.progress-header span:first-child {
+  font-weight: 400;
+  color: #374151;
+  font-size: 0.875rem;
+}
+
+.progress-percent {
+  font-weight: 600;
+  color: #000000;
+  font-size: 0.875rem;
+}
+
+.progress-bar {
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #000000;
+  transition: width 0.3s ease;
+}
+
+.progress-note {
+  color: #6b7280;
+  font-size: 0.75rem;
+  margin: 0;
+}
+
+/* Config Items */
+.config-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #f1f3f4;
+}
+
+.config-item span {
+  font-size: 0.875rem;
+  color: #374151;
+  font-weight: 400;
+}
+
+.config-btn {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: color 0.2s ease;
+}
+
+.config-btn:hover {
+  color: #6b7280;
+}
+
+.config-note {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin: 0.25rem 0 0 0;
+}
+
+/* Toggle Items */
+.toggle-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #f1f3f4;
+}
+
+.toggle-item span {
+  font-size: 0.875rem;
+  color: #374151;
+  font-weight: 400;
+}
+
+.toggle {
+  padding: 0.25rem 0.75rem;
+  border-radius: 16px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  min-width: 70px;
+  text-align: center;
+}
+
+.toggle.enabled {
+  background: #000000;
+  color: #ffffff;
+}
+
+.toggle.disabled {
+  background: #6b7280;
+  color: #ffffff;
+}
+
+/* Feature List */
+.feature-list {
+  padding: 0;
+  margin-bottom: 1rem;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #f1f3f4;
+}
+
+.feature-item:last-child {
+  border-bottom: none;
+}
+
+.feature-item span {
+  font-size: 0.875rem;
+  color: #374151;
+  font-weight: 400;
+}
+
+.feature-status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 16px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  min-width: 70px;
+  text-align: center;
+}
+
+.feature-status.enabled {
+  background: #000000;
+  color: #ffffff;
+}
+
+.feature-status.not-configured {
+  background: #6b7280;
+  color: #ffffff;
+}
+
+/* Card Footer */
+.card-footer {
+  padding: 1.5rem 1.5rem;
+  border-top: 1px solid #f1f3f4;
+  text-align: center;
+}
+
+.configure-btn {
+  background: none;
+  border: none;
+  color: #374151;
+  font-size: 0.875rem;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.configure-btn:hover {
+  color: #000000;
+}
+
+/* Placeholder Content */
+.card-content-placeholder {
+  padding: 2rem 1.5rem;
+  text-align: center;
+  color: #666;
+  font-style: italic;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .overview-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .service-card {
+    margin: 0 0.5rem;
+  }
+  
+  .alert-banner {
+    margin: 0 0.5rem 1rem 0.5rem;
+    padding: 0.75rem;
+  }
+  
+  .page-header h1 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-header {
+    padding: 1rem 1rem 0 1rem;
+  }
+  
+  .service-description {
+    padding: 0 1rem;
+  }
+  
+  .progress-section,
+  .feature-list {
+    padding: 0 1rem;
+  }
+  
+  .config-item,
+  .toggle-item {
+    padding: 0.75rem 1rem;
+  }
+  
+  .card-footer {
+    padding: 1rem;
+  }
+}

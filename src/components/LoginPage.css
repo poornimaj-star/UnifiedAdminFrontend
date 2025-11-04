@@ -1,0 +1,276 @@
+/* Login Page Styles */
+.login-page {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header Styles */
+.login-header {
+  background: linear-gradient(135deg, #4a1a3d, #6b2758);
+  padding: 1rem 0;
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.header-nav {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.nav-button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.login-btn {
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.login-btn.active {
+  background: #fff;
+  color: #e91e63;
+  border-color: #fff;
+}
+
+.login-btn:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.signup-btn {
+  background: #e91e63;
+  color: #fff;
+  border: 1px solid #e91e63;
+}
+
+.signup-btn:hover {
+  background: #d81b60;
+  border-color: #d81b60;
+}
+
+/* Main Content */
+.login-main {
+  flex: 1;
+  padding: 3rem 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 450px;
+}
+
+.login-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 3rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e9ecef;
+}
+
+/* Card Header */
+.card-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.card-header h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 0.5rem 0;
+}
+
+.card-header p {
+  font-size: 1rem;
+  color: #666;
+  margin: 0;
+}
+
+/* Form Styles */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.required {
+  color: #e91e63;
+  font-weight: 600;
+}
+
+.form-group input {
+  padding: 0.875rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  background: #fff;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #e91e63;
+  box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
+}
+
+.form-group input::placeholder {
+  color: #9ca3af;
+}
+
+/* Sign In Button */
+.signin-button {
+  background: linear-gradient(135deg, #e91e63, #ad1457);
+  color: #fff;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 1rem;
+}
+
+.signin-button:hover {
+  background: linear-gradient(135deg, #d81b60, #9c1049);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(233, 30, 99, 0.3);
+}
+
+.signin-button:active {
+  transform: translateY(0);
+}
+
+/* Forgot Password Button */
+.forgot-password-button {
+  background: none;
+  border: none;
+  color: #e91e63;
+  cursor: pointer;
+  font-size: 0.875rem;
+  text-decoration: underline;
+  padding: 0.5rem 0;
+  transition: color 0.2s ease;
+  text-align: center;
+}
+
+.forgot-password-button:hover {
+  color: #ad1457;
+}
+
+/* Signup Section */
+.signup-section {
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.signup-section p {
+  color: #666;
+  font-size: 0.875rem;
+  margin: 0 0 0.75rem 0;
+}
+
+.create-account-button {
+  background: none;
+  border: none;
+  color: #e91e63;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: underline;
+  padding: 0.5rem 0;
+  transition: color 0.2s ease;
+}
+
+.create-account-button:hover {
+  color: #ad1457;
+}
+
+/* Back Home Section */
+.back-home-section {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.back-home-button {
+  background: transparent;
+  color: #6b7280;
+  border: 1px solid #d1d5db;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.back-home-button:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+  color: #374151;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .login-main {
+    padding: 2rem 1rem;
+  }
+  
+  .login-card {
+    padding: 2rem;
+  }
+  
+  .card-header h1 {
+    font-size: 1.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-nav {
+    gap: 0.5rem;
+  }
+  
+  .nav-button {
+    padding: 0.625rem 1rem;
+    font-size: 14px;
+  }
+  
+  .login-card {
+    padding: 1.5rem;
+    margin: 0 0.5rem;
+  }
+}

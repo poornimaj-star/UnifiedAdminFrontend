@@ -1,0 +1,87 @@
+/* Signup Modal Specific Styles */
+.signup-modal {
+  max-width: 450px;
+}
+
+/* Name Group for First and Last Name */
+.name-group {
+  display: flex;
+  gap: 15px;
+}
+
+.name-group .form-group {
+  flex: 1;
+}
+
+/* Signup Form */
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Sign Up Button */
+.sign-up-button {
+  background: linear-gradient(135deg, #e91e63, #ad1457);
+  color: white;
+  border: none;
+  padding: 14px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 10px;
+}
+
+.sign-up-button:hover {
+  background: linear-gradient(135deg, #d81b60, #9c1049);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(233, 30, 99, 0.3);
+}
+
+.sign-up-button:active {
+  transform: translateY(0);
+}
+
+/* Login Section */
+.login-section {
+  text-align: center;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.login-section p {
+  color: #666;
+  font-size: 14px;
+  margin: 0 0 10px 0;
+}
+
+.sign-in-link {
+  background: none;
+  border: none;
+  color: #e91e63;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: underline;
+  padding: 8px 0;
+  transition: color 0.2s ease;
+}
+
+.sign-in-link:hover {
+  color: #ad1457;
+}
+
+/* Responsive Design for Signup */
+@media (max-width: 480px) {
+  .name-group {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .signup-modal {
+    max-width: 90%;
+  }
+}

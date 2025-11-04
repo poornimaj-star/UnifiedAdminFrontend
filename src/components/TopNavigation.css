@@ -1,0 +1,132 @@
+/* Top Navigation Styles */
+.top-navigation {
+  height: 60px;
+  background: #ffffff;
+  border-bottom: 1px solid #e9ecef;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  z-index: 1000;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.evaa-logo {
+  background: linear-gradient(135deg, #e91e63, #ad1457);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.logo-text {
+  font-family: 'Arial', sans-serif;
+}
+
+.organization-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.org-name {
+  font-weight: 500;
+  color: #333;
+  font-size: 1rem;
+}
+
+.add-tab-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  color: #666;
+  transition: all 0.2s ease;
+}
+
+.add-tab-btn:hover {
+  background: #f5f5f5;
+  border-color: #ccc;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+}
+
+.nav-icons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-icon-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: none;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 16px;
+}
+
+.nav-icon-btn:hover {
+  background: #f5f5f5;
+}
+
+.logout-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: none;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 16px;
+  color: #dc3545;
+}
+
+.logout-btn:hover {
+  background: #fee;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .top-navigation {
+    padding: 0 0.5rem;
+  }
+  
+  .org-name {
+    display: none;
+  }
+  
+  .nav-icons {
+    gap: 0.25rem;
+  }
+  
+  .nav-icon-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+}

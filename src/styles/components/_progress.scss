@@ -1,0 +1,41 @@
+// Custom Progress Styles
+.progress-section-custom {
+  @extend .p-3;
+  border-bottom: 1px solid $border-color;
+
+  .progress-header {
+    @extend .d-flex, .justify-content-between, .align-items-center, .mb-2;
+
+    .progress-label {
+      font-weight: $font-weight-normal;
+      color: $text-dark;
+      font-size: $font-size-sm;
+    }
+
+    .progress-percent {
+      font-weight: $font-weight-semibold;
+      color: $black;
+      font-size: $font-size-sm;
+    }
+  }
+
+  .progress-custom {
+    @extend .progress;
+    height: 8px;
+    background-color: $progress-bg;
+    border-radius: $border-radius-sm;
+    margin-bottom: 0.5rem;
+
+    .progress-bar-custom {
+      @extend .progress-bar;
+      background-color: $progress-bar-bg;
+      transition: width 0.3s ease;
+    }
+  }
+
+  .progress-note {
+    color: $text-muted;
+    font-size: 0.75rem;
+    margin: 0;
+  }
+}

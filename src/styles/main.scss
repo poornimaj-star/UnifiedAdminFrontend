@@ -1,0 +1,24 @@
+// Custom component styles
+.btn-primary-custom {
+  background: linear-gradient(135deg, #e91e63, #ad1457) !important;
+  border: none !important;
+  font-weight: 600 !important;
+  transition: all 0.2s ease !important;
+
+  &:hover {
+    background: linear-gradient(135deg, darken(#e91e63, 5%), darken(#ad1457, 5%)) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(233, 30, 99, 0.3) !important;
+  }
+
+  &:active {
+    transform: translateY(0) !important;
+  }
+}
+
+.navbar-custom {
+  background-color: #ffffff !important;
+  border-bottom: 1px solid #e5e7eb !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1) !important;
+  height: 60px !important;
+}

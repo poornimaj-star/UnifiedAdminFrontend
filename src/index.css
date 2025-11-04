@@ -1,0 +1,361 @@
+/* Import Bootstrap from CDN */
+@import url('https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css');
+
+/* Custom CSS Variables for Theme */
+:root {
+  --primary-color: #e91e63;
+  --primary-dark: #ad1457;
+  --primary-light: #f8bbd9;
+  --text-dark: #374151;
+  --text-muted: #6b7280;
+  --border-color: #e5e7eb;
+  --card-bg: #ffffff;
+  --body-bg: #f8f9fa;
+  
+  /* Override Bootstrap's primary colors with pink */
+  --bs-primary: #e91e63;
+  --bs-primary-rgb: 233, 30, 99;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: var(--body-bg);
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.5;
+  color: var(--text-dark);
+}
+
+/* Custom Button Styles */
+.btn-primary-custom {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)) !important;
+  border: none !important;
+  font-weight: 600 !important;
+  transition: all 0.2s ease !important;
+  color: white !important;
+}
+
+.btn-primary-custom:hover {
+  background: linear-gradient(135deg, #0b5ed7, #0a58ca) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3) !important;
+  color: white !important;
+}
+
+.btn-primary-custom:active {
+  transform: translateY(0) !important;
+}
+
+.btn-outline-primary {
+  color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+  background-color: transparent !important;
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+  color: white !important;
+}
+
+/* Override all Bootstrap primary colors with pink */
+.btn-primary {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+  color: white !important;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-dark) !important;
+  border-color: var(--primary-dark) !important;
+  color: white !important;
+}
+
+.btn-primary:focus, .btn-primary:active {
+  background-color: var(--primary-dark) !important;
+  border-color: var(--primary-dark) !important;
+  color: white !important;
+  box-shadow: 0 0 0 0.2rem rgba(233, 30, 99, 0.25) !important;
+}
+
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
+.bg-primary {
+  background-color: var(--primary-color) !important;
+}
+
+.border-primary {
+  border-color: var(--primary-color) !important;
+}
+
+.badge.bg-primary {
+  background-color: var(--primary-color) !important;
+}
+
+/* Progress bars */
+.progress-bar {
+  background-color: var(--primary-color) !important;
+}
+
+.progress-bar.bg-primary {
+  background-color: var(--primary-color) !important;
+}
+
+/* Links */
+a {
+  color: var(--primary-color) !important;
+}
+
+a:hover {
+  color: var(--primary-dark) !important;
+}
+
+/* Form controls focus */
+.form-control:focus, .form-select:focus {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 0.2rem rgba(233, 30, 99, 0.25) !important;
+}
+
+/* Nav pills active state */
+.nav-pills .nav-link.active {
+  background-color: light-gray !important;
+}
+
+/* Pagination */
+.page-link {
+  color: var(--primary-color) !important;
+}
+
+.page-item.active .page-link {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+}
+
+/* Override info colors with pink variations */
+.text-info {
+  color: var(--primary-color) !important;
+}
+
+.bg-info {
+  background-color: var(--primary-light) !important;
+}
+
+.bg-info.bg-opacity-10 {
+  background-color: rgba(233, 30, 99, 0.1) !important;
+}
+
+.btn-outline-info {
+  color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+}
+
+.btn-outline-info:hover {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+  color: white !important;
+}
+
+/* Update any remaining blue references */
+.badge.bg-primary.bg-opacity-10 {
+  background-color: rgba(233, 30, 99, 0.1) !important;
+  color: var(--primary-color) !important;
+}
+
+/* Custom Navbar Styles */
+.navbar-custom {
+  background-color: var(--card-bg) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1) !important;
+  height: 60px !important;
+}
+
+.navbar-brand-custom {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)) !important;
+  color: white !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 0.5rem !important;
+  font-weight: 700 !important;
+  font-size: 1.1rem !important;
+  text-decoration: none !important;
+}
+
+.navbar-brand-custom:hover {
+  color: white !important;
+}
+
+/* Custom Card Styles */
+.card-custom {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.card-custom:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Focus States */
+.form-control:focus {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 0.2rem rgba(233, 30, 99, 0.25) !important;
+}
+
+/* Sidebar Styles */
+.sidebar-custom {
+  width: 280px;
+  background-color: var(--card-bg);
+  border-right: 1px solid var(--border-color);
+  height: 100%;
+  overflow-y: auto;
+}
+
+.nav-link.active {
+  background-color: rgba(233, 30, 99, 0.1) !important;
+  color: var(--primary) !important;
+  font-weight: 500 !important;
+}
+
+/* Status Badges */
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 16px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  min-width: 70px;
+  text-align: center;
+}
+
+.status-badge.enabled {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.status-badge.disabled {
+  background-color: #6b7280;
+  color: #ffffff;
+}
+
+.status-badge.not-configured {
+  background-color: #6b7280;
+  color: #ffffff;
+}
+
+/* Custom Dropdown Styles */
+.dropdown-toggle {
+  font-size: 0.875rem !important;
+  color: #6b7280 !important;
+  border: 1px solid #d1d5db !important;
+  background-color: white !important;
+}
+
+.dropdown-toggle:hover {
+  background-color: #f9fafb !important;
+  border-color: var(--primary-color) !important;
+}
+
+.dropdown-toggle:focus {
+  box-shadow: 0 0 0 2px rgba(233, 30, 99, 0.1) !important;
+  border-color: var(--primary-color) !important;
+}
+
+.dropdown-toggle::after {
+  margin-left: auto !important;
+}
+
+.dropdown-menu {
+  border: 1px solid #e5e7eb !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+  border-radius: 0.5rem !important;
+}
+
+.dropdown-item {
+  padding: 0.5rem 1rem !important;
+  font-size: 0.875rem !important;
+  color: #374151 !important;
+  transition: all 0.15s ease !important;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(233, 30, 99, 0.1) !important;
+  color: var(--primary-color) !important;
+}
+
+.dropdown-item.active {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+}
+
+/* Settings Dropdown Specific Styles */
+.btn-light.dropdown-toggle {
+  background-color: #f8f9fa !important;
+  border: 1px solid #dee2e6 !important;
+}
+
+.btn-light.dropdown-toggle:hover {
+  background-color: #e2e6ea !important;
+}
+
+.btn-light.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(233, 30, 99, 0.25) !important;
+}
+
+/* Hide dropdown arrow for icon buttons */
+.btn-light.dropdown-toggle::after {
+  display: none !important;
+}
+
+/* Settings Dropdown Menu Styles */
+.settings-dropdown {
+  border: 1px solid #e5e7eb !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+  border-radius: 0.75rem !important;
+  padding: 0.5rem 0 !important;
+  margin-top: 0.25rem !important;
+}
+
+.settings-dropdown .dropdown-item {
+  padding: 0.75rem 1rem !important;
+  font-size: 0.875rem !important;
+  color: #374151 !important;
+  font-weight: 500 !important;
+  border: none !important;
+  background: none !important;
+  width: 100% !important;
+  text-align: left !important;
+}
+
+.settings-dropdown .dropdown-item:hover {
+  background-color: #f3f4f6 !important;
+  color: #111827 !important;
+}
+
+.settings-dropdown .dropdown-item:active {
+  background-color: #e5e7eb !important;
+}
+
+.settings-dropdown .dropdown-item span:first-child {
+  width: 20px !important;
+  text-align: center !important;
+}
+
+/* Utilities */
+.text-primary-custom {
+  color: var(--primary-color) !important;
+}
+
+.bg-primary-custom {
+  background-color: var(--primary-color) !important;
+}
+
+.border-primary-custom {
+  border-color: var(--primary-color) !important;
+}

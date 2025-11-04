@@ -1,0 +1,57 @@
+// Custom Navbar Styles
+.navbar-custom {
+  background-color: $navbar-bg;
+  border-bottom: 1px solid $border-color;
+  box-shadow: $box-shadow;
+  height: $navbar-height;
+  z-index: $zindex-navbar;
+
+  .navbar-brand {
+    background: linear-gradient(135deg, $primary, $primary-dark);
+    color: $white;
+    padding: 0.5rem 1rem;
+    border-radius: $border-radius-sm;
+    font-weight: $font-weight-bold;
+    font-size: 1.1rem;
+    text-decoration: none;
+
+    &:hover {
+      color: $white;
+    }
+  }
+
+  .organization-name {
+    color: $text-dark;
+    font-weight: $font-weight-medium;
+    font-size: $font-size-base;
+  }
+
+  .add-tab-btn {
+    @extend .btn, .btn-outline-secondary, .btn-sm;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border-radius: $border-radius-sm;
+  }
+
+  .nav-icon-btn {
+    @extend .btn, .btn-light;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: $border-radius-sm;
+    
+    &:hover {
+      background-color: $gray-100;
+    }
+  }
+
+  .logout-btn {
+    @extend .nav-icon-btn;
+    color: $danger;
+    
+    &:hover {
+      background-color: rgba($danger, 0.1);
+    }
+  }
+}

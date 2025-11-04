@@ -1,0 +1,88 @@
+// Custom Form Styles
+.form-custom {
+  .form-row-custom {
+    @extend .row;
+    
+    .form-col {
+      @extend .col-md-6, .col-12;
+    }
+  }
+
+  .form-group-custom {
+    @extend .mb-3;
+
+    label {
+      @extend .form-label;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-medium;
+      color: $text-dark;
+
+      .required {
+        color: $primary;
+        font-weight: $font-weight-semibold;
+      }
+    }
+
+    .form-control {
+      padding: 0.75rem 1rem;
+      border: 1px solid $border-color;
+      border-radius: $border-radius-sm;
+      font-size: $font-size-base;
+      transition: $transition-base;
+
+      &:focus {
+        border-color: $primary;
+        box-shadow: 0 0 0 0.2rem rgba($primary, 0.25);
+      }
+
+      &::placeholder {
+        color: $gray-500;
+      }
+    }
+
+    .field-note {
+      @extend .form-text;
+      font-size: 0.75rem;
+      color: $text-muted;
+      line-height: 1.4;
+    }
+  }
+
+  .form-actions {
+    @extend .d-flex, .justify-content-between, .mt-4, .pt-3;
+    border-top: 1px solid $border-color;
+    gap: 1rem;
+
+    .back-btn {
+      @extend .btn, .btn-outline-secondary;
+      padding: 0.875rem 1.5rem;
+      font-weight: $font-weight-medium;
+    }
+
+    .next-btn {
+      @extend .btn, .btn-primary, .flex-grow-1;
+      background: linear-gradient(135deg, $primary, $primary-dark);
+      border: none;
+      padding: 0.875rem 2rem;
+      font-weight: $font-weight-semibold;
+      max-width: 300px;
+
+      &:hover {
+        background: linear-gradient(135deg, darken($primary, 5%), darken($primary-dark, 5%));
+        transform: translateY(-1px);
+      }
+    }
+  }
+}
+
+// Responsive form actions
+@include media-breakpoint-down(md) {
+  .form-custom .form-actions {
+    @extend .flex-column;
+
+    .next-btn {
+      max-width: none;
+      order: -1;
+    }
+  }
+}
