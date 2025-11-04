@@ -9,7 +9,7 @@ interface Insurance {
 }
 
 const InsuranceManagement: React.FC = () => {
-  const [insurances, setInsurances] = useState<Insurance[]>([
+  const [insurances] = useState<Insurance[]>([
     {
       id: 1,
       name: 'Anthem Blue Cross and Blue Shield - 12345',

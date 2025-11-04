@@ -8,7 +8,7 @@ interface Location {
 }
 
 const PhoneSmsManagement: React.FC = () => {
-  const [locations, setLocations] = useState<Location[]>([
+  const [locations] = useState<Location[]>([
     {
       id: 1,
       name: 'Downtown Optical Center',
