@@ -21,7 +21,7 @@
     "noUncheckedSideEffectImports": true,
 
     /* Required to use allowImportingTsExtensions */
-    "noEmit": false
+    "noEmit": true
   },
   "include": ["vite.config.ts"]
 }
