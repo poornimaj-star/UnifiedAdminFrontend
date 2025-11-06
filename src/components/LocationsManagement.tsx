@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import { Constants } from './constant';
 
 interface Location {
   locationHours?: string;
@@ -61,7 +62,7 @@ const LocationsManagement: React.FC = () => {
         
         try {
           // Try to fetch from backend
-          const response = await axios.get('/api/locations');
+          const response = await axios.get(`${Constants.API_BASE_URL}/api/locations`);
           const dbLocations = response.data.map((loc: any) => ({
             id: loc.ID,
             name: loc.LOC_NAME,

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import { Constants } from './constant';
 
 interface TopNavigationProps {
   onLogout: () => void;
@@ -58,7 +59,7 @@ const [products, setProducts] = useState<Product[]>([]);
       setError(null);
       // Inside fetchClients function
       try {
-        const response = await axios.get('/api/clients');
+        const response = await axios.get(`${Constants.API_BASE_URL}/api/clients`);
         console.log('API response data:', response.data); // Debug log
         if (!Array.isArray(response.data)) {
           console.error('Expected array response, got:', typeof response.data);
@@ -115,7 +116,7 @@ const [products, setProducts] = useState<Product[]>([]);
     );
     const accountId = selectedClient?.account_id;
     if (accountId) {
-      axios.get('/api/products', {
+      axios.get(`${Constants.API_BASE_URL}/api/products`, {
         params: {
           accountId: accountId
           // You can add internalName, doj, llm if needed

@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Constants } from './constant';
+import axios from "axios";
 
 interface User {
   id: number;
@@ -33,8 +35,7 @@ const UsersManagement: React.FC = () => {
 
     for (const userId of changeIds) {
       try {
-        const updatedUser = backendUserChanges[userId];
-        const axios = await import('axios');
+        const updatedUser = backendUserChanges[userId];    
 
         // Split the username back to first and last name
         const nameParts = updatedUser.username.split(' ');
@@ -50,7 +51,7 @@ const UsersManagement: React.FC = () => {
         const isTechnician = updatedUser.roles.includes('Technician');
         const isReferringPhysician = updatedUser.roles.includes('Referring Physician');
 
-        await axios.default.put(`/api/users/${userId}`, {
+        await axios.put(`${Constants.API_BASE_URL}/api/users/${userId}`, {
           FIRST_NAME: firstName,
           LAST_NAME: lastName,
           EMAIL: updatedUser.email,
@@ -122,7 +123,7 @@ const UsersManagement: React.FC = () => {
 
         // Try to fetch users from backend
         try {
-          const response = await import('axios').then(ax => ax.default.get('/api/users'));
+          const response = await axios.get(`${Constants.API_BASE_URL}/api/users`);
           const dbUsers = response.data.map((user: any, index: number) => {
             console.log('🗄️ Processing DB user:', user);
 
@@ -748,7 +749,7 @@ const UsersManagement: React.FC = () => {
 
         if (!isLocalUser) {
           // Try to delete from backend if it's a backend user
-          await import('axios').then(ax => ax.default.delete(`/api/users/${userToDelete.id}`));
+          await axios.delete(`${Constants.API_BASE_URL}/api/users/${userToDelete.id}`);
         }
 
         // Remove from local state
@@ -868,7 +869,6 @@ const UsersManagement: React.FC = () => {
         } else {
           // For backend users, try API call first, fallback to localStorage
           try {
-            const axios = await import('axios');
 
             // Split the username back to first and last name
             const nameParts = updatedUser.username.split(' ');
@@ -884,7 +884,7 @@ const UsersManagement: React.FC = () => {
             const isTechnician = updatedUser.roles.includes('Technician');
             const isReferringPhysician = updatedUser.roles.includes('Referring Physician');
 
-            await axios.default.put(`/api/users/${editingUser.id}`, {
+            await axios.put(`${Constants.API_BASE_URL}/api/users/${editingUser.id}`, {
               FIRST_NAME: firstName,
               LAST_NAME: lastName,
               EMAIL: updatedUser.email,

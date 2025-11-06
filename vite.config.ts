@@ -12,9 +12,4 @@ export default defineConfig({
       },
     },
   },
-  server: {
-    proxy: {
-      '/api': 'https://unifiedadminbackend-tex0.onrender.com', // Change 3001 to your backend port if different
-    },
-  },
 })
