@@ -12,28 +12,15 @@ interface FormData {
   phoneNumber: string;
 }
 
-const SignupPage: React.FC<SignupPageProps> = ({ onBackToHome, onSwitchToLogin }) => {
-  const [formData, setFormData] = useState<FormData>({
+const SignupPage: React.FC<SignupPageProps> = ({ onSwitchToLogin }) => {
+  const [] = useState<FormData>({
     firstName: '',
     lastName: '',
     email: '',
     phoneNumber: ''
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
 
-  const handleNext = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle next step - Business Details
-    console.log('User Information:', formData);
-    // Here you would typically navigate to the next step or make API call
-  };
 
   return (
     <div className="min-vh-100 d-flex flex-column bg-light">

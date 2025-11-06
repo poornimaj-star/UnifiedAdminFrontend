@@ -28,8 +28,8 @@ interface Location {
 
 const LocationsManagement: React.FC = () => {
   const [locations, setLocations] = useState<Location[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [, setLoading] = useState(true);
+  const [, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState('');
 
   // Debug: Log locations whenever they change

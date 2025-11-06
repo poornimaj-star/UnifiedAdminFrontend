@@ -18,8 +18,8 @@ interface User {
 
 const UsersManagement: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [, setLoading] = useState(true);
+  const [, setError] = useState<string | null>(null);
   const [localUserIds, setLocalUserIds] = useState<number[]>([]);
 
   // Function to sync stored backend user changes to the API
@@ -324,8 +324,8 @@ const UsersManagement: React.FC = () => {
   }, []);
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [filterRole, setFilterRole] = useState('');
-  const [filterStatus, setFilterStatus] = useState('');
+  const [filterRole] = useState('');
+  const [filterStatus] = useState('');
   const [showInactiveUsers, setShowInactiveUsers] = useState(false);
 
   // Tab toggle state
@@ -337,7 +337,7 @@ const UsersManagement: React.FC = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [userToDelete, setUserToDelete] = useState<User | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
+  const [, setSuccessMessage] = useState('');
 
   // Add User Modal fields
   const [addUserFields, setAddUserFields] = useState({
@@ -401,10 +401,6 @@ const UsersManagement: React.FC = () => {
     }
   });
 
-  const handleView = (userId: number) => {
-    console.log('View user:', userId);
-    // View functionality would be implemented here
-  };
 
   const handleEdit = (userId: number) => {
     debugger;
@@ -983,11 +979,6 @@ const UsersManagement: React.FC = () => {
     return `badge rounded-pill px-2 py-1 ${roleClasses[role as keyof typeof roleClasses] || 'badge bg-light text-dark border'}`;
   };
 
-  const getAllRoles = () => {
-    const roles = new Set<string>();
-    users.forEach(user => user.roles.forEach(role => roles.add(role)));
-    return Array.from(roles);
-  };
 
   const filteredUsers = users.filter(user => {
     const matchesSearch = (user.username && user.username.toLowerCase().includes(searchTerm.toLowerCase())) ||

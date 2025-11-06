@@ -100,13 +100,6 @@ const [products, setProducts] = useState<Product[]>([]);
   }, [isSettingsDropdownOpen, onNavigate]);
 
   // Fallback to static list if API fails
-  const organizations = clients.length > 0 
-  ? clients.map(client => client.CLIENT_NAME)
-  : [
-      'ClearView Eye Associates',
-      'VisionCare Optical Centers',
-      'OptiHealth Retail Group'
-    ];
 
   const assistants = [
     'Assistant A',
