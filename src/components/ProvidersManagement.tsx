@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-interface Provider {
+interface Vendors {
   id: number;
   name: string;
   specialty: string;
@@ -9,58 +9,40 @@ interface Provider {
 }
 
 const ProvidersManagement: React.FC = () => {
-  const [providers] = useState<Provider[]>([
-    {
-      id: 1,
-      name: 'Dr. Sarah Johnson',
-      specialty: 'Ophthalmology',
-      npi: '1234567890',
-      status: 'Active'
-    },
-    {
-      id: 2,
-      name: 'Dr. Michael Chen',
-      specialty: 'Optometry',
-      npi: '2345678901',
-      status: 'Active'
-    },
-    {
-      id: 3,
-      name: 'Dr. Emily Rodriguez',
-      specialty: 'Pediatric Ophthalmology',
-      npi: '3456789012',
-      status: 'Active'
-    },
-    {
-      id: 4,
-      name: 'Dr. David Williams',
-      specialty: 'Retina Specialist',
-      npi: '4567890123',
-      status: 'Active'
-    },
-    {
-      id: 5,
-      name: 'Dr. Lisa Thompson',
-      specialty: 'Optometry',
-      npi: '5678901234',
-      status: 'Inactive'
-    },
-    {
-      id: 6,
-      name: 'Dr. James Park',
-      specialty: 'Cornea Specialist',
-      npi: '6789012345',
-      status: 'Active'
-    }
-  ]);
+  const [vendors, setVendors] = useState<Vendors[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  React.useEffect(() => {
+    const fetchProviders = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await import('axios').then(ax => ax.default.get('/api/vendors'));
+        const dbProviders = response.data.map((provider: any) => ({
+          id: provider.ID,
+          name: provider.NAME,
+          specialty: provider.SPECIALTY,
+          npi: provider.NPI,
+          status: provider.STATUS === 1 ? 'Active' : 'Inactive',
+        }));
+        setVendors(dbProviders);
+      } catch (err) {
+        setError('Failed to fetch providers');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProviders();
+  }, []);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
 
-  const filteredProviders = providers.filter(provider => {
-    return provider.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-           provider.specialty.toLowerCase().includes(searchTerm.toLowerCase()) ||
-           provider.npi.includes(searchTerm);
+  const filteredProviders = vendors.filter(vendors => {
+    return vendors.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    vendors.specialty.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    vendors.npi.includes(searchTerm);
   });
 
   const handleOpenModal = () => {
@@ -108,7 +90,7 @@ const ProvidersManagement: React.FC = () => {
 
           {/* Results Count */}
           <div className="mb-3">
-            <span className="text-muted small">Showing {filteredProviders.length} of {providers.length} providers</span>
+            <span className="text-muted small">Showing {filteredProviders.length} of {vendors.length} providers</span>
           </div>
 
           {/* Providers Table */}
@@ -124,20 +106,20 @@ const ProvidersManagement: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredProviders.map((provider) => (
-                  <tr key={provider.id} className="border-bottom">
+                {filteredProviders.map((Vendor: { id: React.Key | null | undefined; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; specialty: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; npi: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; status: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined; }) => (
+                  <tr key={Vendor.id} className="border-bottom">
                     <td className="py-3">
-                      <span className="fw-medium text-primary" style={{ cursor: 'pointer' }}>{provider.name}</span>
+                      <span className="fw-medium text-primary" style={{ cursor: 'pointer' }}>{Vendor.name}</span>
                     </td>
                     <td className="py-3">
-                      <span className="text-muted">{provider.specialty}</span>
+                      <span className="text-muted">{Vendor.specialty}</span>
                     </td>
                     <td className="py-3">
-                      <span className="text-dark">{provider.npi}</span>
+                      <span className="text-dark">{Vendor.npi}</span>
                     </td>
                     <td className="py-3">
-                      <span className={`badge rounded-pill px-2 py-1 ${provider.status === 'Active' ? 'bg-dark text-white' : 'bg-light text-muted border'}`} style={{ fontSize: '0.75rem' }}>
-                        {provider.status}
+                      <span className={`badge rounded-pill px-2 py-1 ${Vendor.status === 'Active' ? 'bg-dark text-white' : 'bg-light text-muted border'}`} style={{ fontSize: '0.75rem' }}>
+                        {Vendor.status}
                       </span>
                     </td>
                     <td className="py-3 text-end">

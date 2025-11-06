@@ -106,7 +106,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate, onBackToMain, currentPage
   };
 
   return (
-    <aside className="bg-white border-end" style={{ width: '35rem', height: '100%', overflowY: 'auto' }}>
+    <aside className="bg-light border-end" style={{ width: '17rem', height: '100%', overflowY: 'auto' }}>
       <nav className="nav nav-pills flex-column p-3">
         {menuItems.map((item) => {
           if (item.isBackButton) {
@@ -125,7 +125,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate, onBackToMain, currentPage
           
           if (item.isHeader) {
             return (
-              <div key={item.id} className="d-flex align-items-center gap-2 px-3 py-2 fw-semibold text-dark small">
+              <div key={item.id} className="d-flex align-items-center gap-2 px-1 py-2 pb-0 fw-semibold text-dark small">
                 <span>{item.icon}</span>
                 <span>{item.label}</span>
               </div>

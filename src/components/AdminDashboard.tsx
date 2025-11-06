@@ -88,7 +88,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout, onBackToMain,
         />
         
         {/* Main Content */}
-        <main className="flex-grow-1 p-4 bg-light overflow-auto">
+        <main className="flex-grow-1 p-4 overflow-auto bg-white">
           {renderContent()}
         </main>
       </div>

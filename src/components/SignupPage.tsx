@@ -57,91 +57,90 @@ const SignupPage: React.FC<SignupPageProps> = ({ onBackToHome, onSwitchToLogin }
       {/* Main Content */}
       <main className="flex-grow-1 d-flex align-items-center justify-content-center p-4">
         <div className="container" style={{ maxWidth: '600px' }}>
-          <div className="card border shadow-sm" style={{ borderRadius: '1rem' }}>
+          <div className="card-custom">
             {/* Header Section */}
-            <div className="card-header">
-              <h1>Create Your EVAA Account</h1>
-              <p>Let's start by setting up your profile.</p>
+            <div className="text-center mb-4 p-4 pb-0">
+              <h1 className="display-6 fw-semibold mb-2" style={{ 
+                background: 'linear-gradient(135deg, #e91e63, #ad1457)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
+              }}>
+                Create Your EVAA Account
+              </h1>
+              <p className="text-muted">Let's start by setting up your profile.</p>
             </div>
 
             {/* Form Section */}
-            <div className="form-section">
-              <div className="section-header">
-                <h2>User Information</h2>
-                <p>Please provide your personal details to get started</p>
+            <div className="px-4 pb-2">
+              <div className="text-center mb-4 pb-3 border-bottom">
+                <h2 className="h5 fw-semibold mb-1">User Information</h2>
+                <p className="small text-muted mb-0">Please provide your personal details to get started</p>
               </div>
 
-              <form onSubmit={handleNext} className="signup-form">
-                <div className="form-row">
-                  <div className="form-group">
-                    <label htmlFor="firstName">
-                      First Name <span className="required">*</span>
+              <form className="form-custom">
+                <div className="row">
+                  <div className="col-md-6 mb-3">
+                    <label htmlFor="firstName" className="form-label">
+                      First Name <span className="text-primary fw-semibold">*</span>
                     </label>
                     <input
                       type="text"
+                      className="form-control"
                       id="firstName"
                       name="firstName"
-                      value={formData.firstName}
-                      onChange={handleInputChange}
-                      placeholder="asfsaf"
+                      placeholder="Enter your first name"
                       required
                     />
                   </div>
-                  <div className="form-group">
-                    <label htmlFor="lastName">
-                      Last Name <span className="required">*</span>
+                  <div className="col-md-6 mb-3">
+                    <label htmlFor="lastName" className="form-label">
+                      Last Name <span className="text-primary fw-semibold">*</span>
                     </label>
                     <input
                       type="text"
+                      className="form-control"
                       id="lastName"
                       name="lastName"
-                      value={formData.lastName}
-                      onChange={handleInputChange}
-                      placeholder="asfasfd"
+                      placeholder="Enter your last name"
                       required
                     />
                   </div>
                 </div>
 
-                <div className="form-group">
-                  <label htmlFor="email">
-                    Email Address <span className="required">*</span>
+                <div className="mb-3">
+                  <label htmlFor="email" className="form-label">
+                    Email Address <span className="text-primary fw-semibold">*</span>
                   </label>
                   <input
                     type="email"
+                    className="form-control"
                     id="email"
                     name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    placeholder="asdf@click5.com"
+                    placeholder="Enter your email"
                     required
                   />
                 </div>
 
-                <div className="form-group">
-                  <label htmlFor="phoneNumber">Phone Number</label>
+                <div className="mb-4">
+                  <label htmlFor="phoneNumber" className="form-label">Phone Number</label>
                   <input
                     type="tel"
+                    className="form-control"
                     id="phoneNumber"
                     name="phoneNumber"
-                    value={formData.phoneNumber}
-                    onChange={handleInputChange}
                     placeholder="Enter your phone number (optional)"
                   />
-                  <p className="field-note">
+                  <div className="form-text">
                     We'll use this to contact you about your account if needed
-                  </p>
+                  </div>
                 </div>
 
-                <div className="form-actions">
-                  <button 
-                    type="button" 
-                    className="back-button"
-                    onClick={onBackToHome}
-                  >
+                <div className="d-flex justify-content-between pt-3 border-top gap-3">
+                  <button type="button" className="btn btn-outline-secondary px-4">
                     Back to Home
                   </button>
-                  <button type="submit" className="next-button">
+                  <button type="submit" className="btn btn-primary-custom flex-grow-1" style={{ maxWidth: '300px' }}>
                     Next: Business Details
                   </button>
                 </div>
@@ -150,6 +149,7 @@ const SignupPage: React.FC<SignupPageProps> = ({ onBackToHome, onSwitchToLogin }
           </div>
         </div>
       </main>
+
     </div>
   );
 };

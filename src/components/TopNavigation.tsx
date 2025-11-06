@@ -10,9 +10,34 @@ interface TopNavigationProps {
 }
 
 interface Client {
+  PRODUCT_NAME: any;
+  CLIENT_NAME: any;
   client_id: number;
   client_name: string;
-  // Add other fields from your stored procedure as needed
+  account_id: string;
+  connection_string: string;
+  is_active: boolean;
+  create_by: string;
+  create_date: string;
+  update_process: string;
+  is_maineyes_practice: boolean;
+  is_cloud_hosted: boolean;
+  ioapi_url: string;
+  chat_enabled: boolean;
+  update_date: string;
+}
+interface Product {
+  PRODUCT_ID: number;
+  PRODUCT_NAME: string;
+  PREFERENCES: string;
+  IS_ACTIVE: number;
+  CREATE_BY: string;
+  CREATE_DATE: string;
+  CREATE_PROCESS: string;
+  UPDATE_BY: string;
+  UPDATE_DATE: string;
+  UPDATE_PROCESS: string;
+  INTERNAL_NAME: string;
 }
 
 const TopNavigation: React.FC<TopNavigationProps> = ({ onLogout, onBackToMain, onNavigate, selectedOrganization: initialOrganization, selectedAssistant: initialAssistant }) => {
@@ -23,6 +48,8 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ onLogout, onBackToMain, o
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+const [products, setProducts] = useState<Product[]>([]);
+
 
   // Fetch clients from the API
   useEffect(() => {
@@ -31,7 +58,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ onLogout, onBackToMain, o
       setError(null);
       // Inside fetchClients function
       try {
-        const response = await axios.get('http://localhost:3001/api/clients');
+        const response = await axios.get('/api/clients');
         console.log('API response data:', response.data); // Debug log
         if (!Array.isArray(response.data)) {
           console.error('Expected array response, got:', typeof response.data);
@@ -43,7 +70,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ onLogout, onBackToMain, o
           ? `Failed to fetch clients: ${err.response?.data?.error || err.message}`
           : 'Error loading clients. Using default list.';
         setError(errorMessage);
-        console.error('Error details:', err);
+        console.error('Error details:', err); // Detailed error logging
       }
       finally {
         setIsLoading(false);
@@ -74,18 +101,39 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ onLogout, onBackToMain, o
 
   // Fallback to static list if API fails
   const organizations = clients.length > 0 
-    ? clients.map(client => client.client_name)
-    : [
-        'ClearView Eye Associates',
-        'VisionCare Optical Centers',
-        'OptiHealth Retail Group'
-      ];
+  ? clients.map(client => client.CLIENT_NAME)
+  : [
+      'ClearView Eye Associates',
+      'VisionCare Optical Centers',
+      'OptiHealth Retail Group'
+    ];
 
   const assistants = [
     'Assistant A',
     'Assistant B',
     'Assistant C'
   ];
+
+  function handleAssistantSelect(assistant: string): void {
+    setSelectedAssistant(assistant);
+    // Find the selected client by organization name
+    const selectedClient = clients.find(
+      client => client.client_name === selectedOrganization || client.CLIENT_NAME === selectedOrganization
+    );
+    const accountId = selectedClient?.account_id;
+    if (accountId) {
+      axios.get('/api/products', {
+        params: {
+          accountId: accountId
+          // You can add internalName, doj, llm if needed
+        }
+      })
+        .then(res => setProducts(res.data))
+        .catch(() => setProducts([]));
+    } else {
+      setProducts([]);
+    }
+  }
 
   return (
     <header className="navbar navbar-expand-lg bg-white border-bottom shadow-sm" style={{ height: '60px', zIndex: 1030 }}>
@@ -115,20 +163,20 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ onLogout, onBackToMain, o
               {isLoading ? (
                 <span className="text-start">Loading clients...</span>
               ) : (
-                <span className="text-start">{selectedOrganization}</span>
+                <span className="text-start">{selectedOrganization || 'Select Organization'}</span>
               )}
             </button>
             <ul className="dropdown-menu">
               {error && (
                 <li className="dropdown-item text-danger">{error}</li>
               )}
-              {organizations.map((org) => (
-                <li key={org}>
+              {clients.map((client) => (
+                <li key={client.client_id}>
                   <button 
-                    className={`dropdown-item ${selectedOrganization === org ? 'active' : ''}`}
-                    onClick={() => setSelectedOrganization(org)}
+                    className={`dropdown-item ${selectedOrganization === client.client_name ? 'active' : ''}`}
+                    onClick={() => setSelectedOrganization(client.client_name)}
                   >
-                    {org}
+                    {client.CLIENT_NAME}
                   </button>
                 </li>
               ))}
@@ -153,17 +201,30 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ onLogout, onBackToMain, o
               <span className="text-start">{selectedAssistant}</span>
             </button>
             <ul className="dropdown-menu">
-              {assistants.map((assistant) => (
-                <li key={assistant}>
-                  <button 
-                    className={`dropdown-item ${selectedAssistant === assistant ? 'active' : ''}`}
-                    onClick={() => setSelectedAssistant(assistant)}
-                  >
-                    {assistant}
-                  </button>
-                </li>
-              ))}
-            </ul>
+  {assistants.map((assistant) => (
+    <li key={assistant}>
+      <button
+        className={`dropdown-item ${selectedAssistant === assistant ? 'active' : ''}`}
+        onClick={(e) => {
+          e.stopPropagation(); // Stop event propagation
+          handleAssistantSelect(assistant);
+        }}
+      >
+        {assistant}
+      </button>
+      {/* Show products for selected assistant */}
+      {selectedAssistant === assistant && products.length > 0 && (
+        <ul className="list-group mt-2" onClick={(e) => e.stopPropagation()}>
+          {products.map(product => (
+            <li key={product.PRODUCT_ID} className="list-group-item">
+              {product.PRODUCT_NAME}
+            </li>
+          ))}
+        </ul>
+      )}
+    </li>
+  ))}
+</ul>
           </div>
         </div>
         
