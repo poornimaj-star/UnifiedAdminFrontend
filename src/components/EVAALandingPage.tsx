@@ -1,6 +1,6 @@
 import React from 'react';
 import evaaImage from '../assets/evaaImage.png';
-import evaaIcon from '../assets/evaaIcon.png';
+import evaaIcon from '../assets/evaa-Icon.png';
 
 interface EVAALandingPageProps {
   onLogin: () => void;
