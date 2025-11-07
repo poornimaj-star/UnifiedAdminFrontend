@@ -1,6 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Constants } from './constant';
+import evaaIcon from '../assets/evaa-Icon.png';
+import plusIcon from '../assets/Plus.svg';
+import settingIcon from '../assets/Settings.svg';
+import downarrowIcon from '../assets/DownArrow.svg';
+import questionIcon from '../assets/Question.svg';
+import userprofileIcon from '../assets/UserProfile.svg';
+import notificationIcon from '../assets/Notifications.svg';
+import knowledgeIcon from '../assets/KnowledgeBase.svg';
+import contactIcon from '../assets/ContactSupport.svg';
+import feedbackIcon from '../assets/SendFeedback.svg';
+import referIcon from '../assets/ReferColleague.svg'; 
 
 interface TopNavigationProps {
   onLogout: () => void;
@@ -27,29 +38,27 @@ interface Client {
   chat_enabled: boolean;
   update_date: string;
 }
-interface Product {
-  PRODUCT_ID: number;
-  PRODUCT_NAME: string;
-  PREFERENCES: string;
-  IS_ACTIVE: number;
-  CREATE_BY: string;
-  CREATE_DATE: string;
-  CREATE_PROCESS: string;
-  UPDATE_BY: string;
-  UPDATE_DATE: string;
-  UPDATE_PROCESS: string;
-  INTERNAL_NAME: string;
-}
+// interface Product {
+//   PRODUCT_ID: number;
+//   PRODUCT_NAME: string;
+//   PREFERENCES: string;
+//   IS_ACTIVE: number;
+//   CREATE_BY: string;
+//   CREATE_DATE: string;
+//   CREATE_PROCESS: string;
+//   UPDATE_BY: string;
+//   UPDATE_DATE: string;
+//   UPDATE_PROCESS: string;
+//   INTERNAL_NAME: string;
+// }
 
-const TopNavigation: React.FC<TopNavigationProps> = ({ onLogout, onBackToMain, onNavigate, selectedOrganization: initialOrganization, selectedAssistant: initialAssistant }) => {
+const TopNavigation: React.FC<TopNavigationProps> = ({ onLogout, onNavigate, selectedOrganization: initialOrganization }) => {
   const [selectedOrganization, setSelectedOrganization] = useState(initialOrganization);
-  const [selectedAssistant, setSelectedAssistant] = useState(initialAssistant);
   const [isSettingsDropdownOpen, setIsSettingsDropdownOpen] = useState(false);
   const [clients, setClients] = useState<Client[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
-const [products, setProducts] = useState<Product[]>([]);
 
 
   // Fetch clients from the API
@@ -100,45 +109,19 @@ const [products, setProducts] = useState<Product[]>([]);
     };
   }, [isSettingsDropdownOpen, onNavigate]);
 
-  // Fallback to static list if API fails
-
-  const assistants = [
-    'Assistant A',
-    'Assistant B',
-    'Assistant C'
-  ];
-
-  function handleAssistantSelect(assistant: string): void {
-    setSelectedAssistant(assistant);
-    // Find the selected client by organization name
-    const selectedClient = clients.find(
-      client => client.client_name === selectedOrganization || client.CLIENT_NAME === selectedOrganization
-    );
-    const accountId = selectedClient?.account_id;
-    if (accountId) {
-      axios.get(`${Constants.API_BASE_URL}/api/products`, {
-        params: {
-          accountId: accountId
-          // You can add internalName, doj, llm if needed
-        }
-      })
-        .then(res => setProducts(res.data))
-        .catch(() => setProducts([]));
-    } else {
-      setProducts([]);
-    }
-  }
+  // Fallback to static list if API fails    
 
   return (
     <header className="navbar navbar-expand-lg bg-white border-bottom shadow-sm" style={{ height: '60px', zIndex: 1030 }}>
       <div className="container-fluid">
         <div className="d-flex align-items-center gap-3">
-          <div className="badge text-white fw-bold fs-6 px-3 py-2" style={{ 
-            background: 'linear-gradient(135deg, #e91e63, #ad1457)',
-            borderRadius: '0.5rem'
-          }}>
-            EVAA
-          </div>
+          <img 
+            src={evaaIcon} 
+            alt="EVAA Logo" 
+            style={{ 
+              width: '7rem',               
+            }} 
+          />
           
           {/* Organization Dropdown */}
           <div className="dropdown">
@@ -149,9 +132,10 @@ const [products, setProducts] = useState<Product[]>([]);
               aria-expanded="false"
               style={{ 
                 minWidth: '200px', 
-                justifyContent: 'space-between',
-                backgroundColor: '#f8f9fa',
-                border: '1px solid #e9ecef'
+                  justifyContent: 'space-between',
+                  backgroundColor: '#f3f3f5',
+                  border: 'none',
+                  boxShadow: 'none'
               }}
             >
               {isLoading ? (
@@ -159,6 +143,9 @@ const [products, setProducts] = useState<Product[]>([]);
               ) : (
                 <span className="text-start">{selectedOrganization || 'Select Organization'}</span>
               )}
+              <svg width="12" height="12" fill="currentColor" className="text-muted" viewBox="0 0 16 16">
+                  <path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                </svg>
             </button>
             <ul className="dropdown-menu">
               {error && (
@@ -192,166 +179,173 @@ const [products, setProducts] = useState<Product[]>([]);
                 border: '1px solid #e9ecef'
               }}
             >
-              <span className="text-start">{selectedAssistant}</span>
+              <span className="text-start">
+                <img src={plusIcon} alt="Help" style={{ width: '20px', height: '20px' }} />
+
+              </span>
             </button>
-            <ul className="dropdown-menu">
-  {assistants.map((assistant) => (
-    <li key={assistant}>
-      <button
-        className={`dropdown-item ${selectedAssistant === assistant ? 'active' : ''}`}
-        onClick={(e) => {
-          e.stopPropagation(); // Stop event propagation
-          handleAssistantSelect(assistant);
-        }}
-      >
-        {assistant}
-      </button>
-      {/* Show products for selected assistant */}
-      {selectedAssistant === assistant && products.length > 0 && (
-        <ul className="list-group mt-2" onClick={(e) => e.stopPropagation()}>
-          {products.map(product => (
-            <li key={product.PRODUCT_ID} className="list-group-item">
-              {product.PRODUCT_NAME}
-            </li>
-          ))}
-        </ul>
-      )}
-    </li>
-  ))}
-</ul>
           </div>
         </div>
         
-        <div className="d-flex align-items-center gap-2">
-          {onBackToMain && (
-            <button 
-              className="btn btn-outline-primary btn-sm px-3" 
-              onClick={onBackToMain} 
-              title="Back to Main Screen"
-            >
-              ← Back to Main
+        <div className="d-flex align-items-center gap-2">          
+                      <button className="btn px-2 d-flex gap-2 bg-transparent border-0" title="Help">
+              <img src={notificationIcon} alt="Help" style={{ width: '20px', height: '20px' }} />
             </button>
-          )}
-          <button className="btn btn-light" style={{ width: '36px', height: '36px', padding: 0 }} title="Notifications">
-            🔔
-          </button>
+            <div className="dropdown">
+              <button 
+                className="btn px-2 d-flex gap-2 bg-transparent border-0" 
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                title="Help"
+              >
+                <img src={questionIcon} alt="Help" style={{ width: '20px', height: '20px' }} />
+                <img src={downarrowIcon} alt="Help" style={{ width: '20px', height: '20px' }} />
+              </button>
+              <ul className="dropdown-menu dropdown-menu-end" style={{ minWidth: '200px' }}>
+                <li>
+                  <button className="dropdown-item d-flex align-items-center gap-2" onClick={() => console.log('Knowledge Base clicked')}>
+                    <img src={knowledgeIcon} alt="Knowledge Base" style={{ width: '16px', height: '16px' }} />
+                    Knowledge Base
+                  </button>
+                </li>
+                <li>
+                  <button className="dropdown-item d-flex align-items-center gap-2" onClick={() => console.log('Contact Support clicked')}>
+                    <img src={contactIcon} alt="Contact Support" style={{ width: '16px', height: '16px' }} />
+                    Contact Support
+                  </button>
+                </li>
+                <li>
+                  <button className="dropdown-item d-flex align-items-center gap-2" onClick={() => console.log('Send Feedback clicked')}>
+                    <img src={feedbackIcon} alt="Send Feedback" style={{ width: '16px', height: '16px' }} />
+                    Send Feedback
+                  </button>
+                </li>
+                <li>
+                  <button className="dropdown-item d-flex align-items-center gap-2" onClick={() => console.log('Refer a Colleague clicked')}>
+                    <img src={referIcon} alt="Refer a Colleague" style={{ width: '16px', height: '16px' }} />
+                    Refer a Colleague
+                  </button>
+                </li>
+              </ul>
+            </div>
           
           {/* Settings Button/Dropdown */}
-          {onNavigate ? (
-            <div className="dropdown position-relative" ref={dropdownRef}>
+          {onNavigate ? (          
+             <div className="dropdown" ref={dropdownRef}>
               <button 
-                className="btn btn-light dropdown-toggle" 
-                type="button" 
-                data-bs-toggle="dropdown" 
+                className="btn px-2 d-flex gap-2 bg-transparent border-0" 
+                type="button"
+                data-bs-toggle="dropdown"
+                title="Settings"                
                 aria-expanded={isSettingsDropdownOpen}
                 onClick={() => setIsSettingsDropdownOpen(!isSettingsDropdownOpen)}
-                style={{ width: '36px', height: '36px', padding: 0, border: 'none' }} 
-                title="Settings"
               >
-                ⚙️
+                <img src={settingIcon} alt="Settings" style={{ width: '20px', height: '20px' }} />     
+                <img src={downarrowIcon} alt="Settings" style={{ width: '20px', height: '20px' }} />                     
               </button>
-              <ul 
-                className={`dropdown-menu dropdown-menu-end settings-dropdown ${isSettingsDropdownOpen ? 'show' : ''}`} 
-                style={{ 
-                  minWidth: '220px',
-                  display: isSettingsDropdownOpen ? 'block' : 'none',
-                  position: 'absolute',
-                  right: 0,
-                  top: '100%',
-                  zIndex: 1000
-                }}
-              >
-              <li>
-                <button 
-                  className="dropdown-item d-flex align-items-center gap-3 py-2"
-                  onClick={() => {
+              <ul className="dropdown-menu dropdown-menu-end" style={{ minWidth: '220px' }}>
+                <li>
+                  <button className="dropdown-item d-flex align-items-center gap-2" onClick={() => {
                     onNavigate?.('overview');
                     setIsSettingsDropdownOpen(false);
-                  }}
-                >
-                  <span style={{ fontSize: '16px' }}>📊</span>
-                  <span>Admin Dashboard</span>
-                </button>
-              </li>
-              <li>
-                <button 
-                  className="dropdown-item d-flex align-items-center gap-3 py-2"
-                  onClick={() => {
+                  }}>
+                    Admin Dashboard
+                  </button>
+                </li>
+                <li>
+                  <button className="dropdown-item d-flex align-items-center gap-2" onClick={() => console.log('Organization/Business clicked')}>          
+                    Organization/Business
+                  </button>
+                </li>
+                <li>
+                  <button className="dropdown-item d-flex align-items-center gap-2" onClick={() => console.log('Locations clicked')}>                  
+                    Locations
+                  </button>
+                </li>
+                <li>
+                  <button className="dropdown-item d-flex align-items-center gap-2" onClick={() => console.log('Providers clicked')}>                    
+                    Providers
+                  </button>
+                </li>
+                <li>
+                  <button className="dropdown-item d-flex align-items-center gap-2" onClick={() => console.log('Insurances clicked')}>                    
+                    Insurances
+                  </button>
+                </li>
+                <li>
+                  <button className="dropdown-item d-flex align-items-center gap-2" onClick={() => {
                     onNavigate?.('users');
                     setIsSettingsDropdownOpen(false);
-                  }}
-                >
-                  <span style={{ fontSize: '16px' }}>👥</span>
-                  <span>Users</span>
-                </button>
-              </li>
-              <li>
-                <button 
-                  className="dropdown-item d-flex align-items-center gap-3 py-2"
-                  onClick={() => {
+                  }}>                    
+                    Users
+                  </button>
+                </li>
+                <li>
+                  <button className="dropdown-item d-flex align-items-center gap-2" onClick={() => {
                     onNavigate?.('licenses');
                     setIsSettingsDropdownOpen(false);
-                  }}
-                >
-                  <span style={{ fontSize: '16px' }}>📋</span>
-                  <span>Licenses & Billing</span>
-                </button>
-              </li>
-              <li>
-                <button 
-                  className="dropdown-item d-flex align-items-center gap-3 py-2"
-                  onClick={() => {
+                  }}>                    
+                    Licenses & Billing
+                  </button>
+                </li>
+                <li>
+                  <button className="dropdown-item d-flex align-items-center gap-2"  onClick={() => {
                     onNavigate?.('phone-sms');
                     setIsSettingsDropdownOpen(false);
-                  }}
-                >
-                  <span style={{ fontSize: '16px' }}>📱</span>
-                  <span>Phone & SMS Management</span>
-                </button>
-              </li>
-              <li>
-                <button 
-                  className="dropdown-item d-flex align-items-center gap-3 py-2"
-                  onClick={() => {
+                  }}>                    
+                    Phone & SMS Management
+                  </button>
+                </li>
+                <li>
+                  <button className="dropdown-item d-flex align-items-center gap-2"  onClick={() => {
                     onNavigate?.('payments');
                     setIsSettingsDropdownOpen(false);
-                  }}
-                >
-                  <span style={{ fontSize: '16px' }}>💳</span>
-                  <span>Payments Setup</span>
-                </button>
-              </li>
-              <li>
-                <button 
-                  className="dropdown-item d-flex align-items-center gap-3 py-2"
-                  onClick={() => {
+                  }}>                    
+                    Patient Payment Setup
+                  </button>
+                </li>
+                <li>
+                  <button className="dropdown-item d-flex align-items-center gap-2" onClick={() => console.log('PMS/EHR Setup clicked')}>                    
+                    PMS/EHR Setup
+                  </button>
+                </li>
+                <li>
+                  <button className="dropdown-item d-flex align-items-center gap-2" onClick={() => {
                     onNavigate?.('data-tables');
                     setIsSettingsDropdownOpen(false);
-                  }}
-                >
-                  <span style={{ fontSize: '16px' }}>📁</span>
-                  <span>Data Tables</span>
-                </button>
-              </li>
-            </ul>
+                  }}>                    
+                    Data Tables
+                  </button>
+                </li>
+              </ul>
             </div>
-          ) : (
-            <button className="btn btn-light" style={{ width: '36px', height: '36px', padding: 0 }} title="Settings">
-              ⚙️
-            </button>
-          )}
+          ) : null}
           
-          <button className="btn btn-light" style={{ width: '36px', height: '36px', padding: 0 }} title="Profile">
-            👤
-          </button>
-          <button 
-            className="btn btn-light text-danger" 
-            style={{ width: '36px', height: '36px', padding: 0 }} 
-            onClick={onLogout} 
-            title="Logout"
-          >
-            🚪
-          </button>
+           <div className="dropdown">
+              <button 
+                className="btn px-2 d-flex gap-2 bg-transparent border-0" 
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                title="Profile"
+              >
+                <img src={userprofileIcon} alt="Profile" style={{ width: '20px', height: '20px' }} />  
+                <img src={downarrowIcon} alt="Profile" style={{ width: '20px', height: '20px' }} />
+              </button>
+              <ul className="dropdown-menu dropdown-menu-end" style={{ minWidth: '160px' }}>
+                <li>
+                  <button className="dropdown-item d-flex align-items-center gap-2" onClick={() => console.log('My Profile clicked')}>                    
+                    My Profile
+                  </button>
+                </li>                
+                <li>
+                  <button className="dropdown-item d-flex align-items-center gap-2"  onClick={onLogout} >                    
+                    Sign Out
+                  </button>
+                </li>
+              </ul>
+            </div>          
         </div>
       </div>
     </header>

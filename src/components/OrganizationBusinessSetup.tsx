@@ -10,14 +10,38 @@ interface Organization {
 }
 
 const OrganizationBusinessSetup: React.FC = () => {
-  const [organization] = useState<Organization>({
-    id: 1,
-    name: 'VisionCare Optical Centers',
-    type: 'Healthcare Provider',
-    taxId: '12-3456789',
-    address: '123 Vision Way, Optometry City, OC 12345',
-    status: 'Active'
+  const [form, setForm] = useState({
+    name: '',
+    address: '',
+    phone: '',
+    email: '',
+    website: '',
+    taxId: '',
+    npi: '',
+    contactPerson: '',
+    contactPhone: '',
+    contactEmail: '',
+    state: ''
   });
+  const [success, setSuccess] = useState('');
+  const [error, setError] = useState('');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setForm(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSuccess('');
+    setError('');
+    try {
+      await import('axios').then(ax => ax.default.post('/api/organization', form));
+      setSuccess('Organization details saved successfully!');
+    } catch (err) {
+      setError('Failed to save organization details.');
+    }
+  };
 
   return (
     <div className="container-fluid">
@@ -35,95 +59,108 @@ const OrganizationBusinessSetup: React.FC = () => {
             <p className="text-muted small mb-0">Basic organization and business details</p>
           </div>
 
-          <form>
-            <div className="row g-3 mb-4">
-              <div className="col-md-4">
-                <label className="form-label small text-muted">Business Name</label>
-                <input 
-                  type="text" 
-                  className="form-control" 
-                  defaultValue={organization.name} 
-                  placeholder="Enter business name"
-                />
+          
+            <form onSubmit={handleSave}>
+              <div className="row g-3 mb-4">
+                <div className="col-md-4">
+                  <label className="form-label small text-muted">Business Name</label>
+                  <input 
+                    type="text"
+                    name="name"
+                    className="form-control"
+                    value={form.name}
+                    onChange={handleChange}
+                    placeholder="Enter business name"
+                  />
+                </div>
+                <div className="col-md-4">
+                  <label className="form-label small text-muted">Website</label>
+                  <input 
+                    type="url"
+                    name="website"
+                    className="form-control"
+                    value={form.website}
+                    onChange={handleChange}
+                    placeholder="https://example.com"
+                  />
+                </div>
+                <div className="col-md-4">
+                  <label className="form-label small text-muted">Tax Id</label>
+                  <input 
+                    type="text"
+                    name="taxId"
+                    className="form-control"
+                    value={form.taxId}
+                    onChange={handleChange}
+                    placeholder="XX-XXXXXXX"
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label className="form-label small text-muted">Group NPI ID</label>
+                  <input 
+                    type="text"
+                    name="npi"
+                    className="form-control"
+                    value={form.npi}
+                    onChange={handleChange}
+                    placeholder="Enter Group NPI ID"
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label className="form-label small text-muted">Contact Person</label>
+                  <input 
+                    type="text"
+                    name="contactPerson"
+                    className="form-control"
+                    value={form.contactPerson}
+                    onChange={handleChange}
+                    placeholder="Contact Person"
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label className="form-label small text-muted">Contact Phone</label>
+                  <input 
+                    type="text"
+                    name="contactPhone"
+                    className="form-control"
+                    value={form.contactPhone}
+                    onChange={handleChange}
+                    placeholder="Contact Phone"
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label className="form-label small text-muted">Contact Email</label>
+                  <input 
+                    type="email"
+                    name="contactEmail"
+                    className="form-control"
+                    value={form.contactEmail}
+                    onChange={handleChange}
+                    placeholder="Contact Email"
+                  />
+                </div>
+                <div className="col-md-12">
+                  <label className="form-label small text-muted">Address</label>
+                  <input 
+                    type="text"
+                    name="address"
+                    className="form-control"
+                    value={form.address}
+                    onChange={handleChange}
+                    placeholder="Street address"
+                  />
+                </div>
               </div>
-              <div className="col-md-4">
-                <label className="form-label small text-muted">Country</label>
-                <input 
-                  type="text" 
-                  className="form-control" 
-                  placeholder="United States of America"
-                />
-              </div>
-              <div className="col-md-4">
-                <label className="form-label small text-muted">Website</label>
-                <input 
-                  type="url" 
-                  className="form-control" 
-                  placeholder="https://example.com"
-                />
-              </div>
-              <div className="col-md-6">
-                <label className="form-label small text-muted">Group NPI ID</label>
-                <input 
-                  type="text" 
-                  className="form-control" 
-                  placeholder="Enter Group NPI ID"
-                />
-              </div>
-              <div className="col-md-6">
-                <label className="form-label small text-muted">Individual NPI</label>
-                <input 
-                  type="text" 
-                  className="form-control" 
-                  placeholder="Enter Individual NPI"
-                />
-              </div>
-              <div className="col-md-6">
-                <label className="form-label small text-muted">Individual NPIS</label>
-                <input 
-                  type="text" 
-                  className="form-control" 
-                  placeholder="Enter Individual NPIS"
-                />
-              </div>
-              <div className="col-md-6">
-                <label className="form-label small text-muted">Tax Id</label>
-                <input 
-                  type="text" 
-                  className="form-control" 
-                  placeholder="XX-XXXXXXX"
-                />
-              </div>
-              <div className="col-md-12">
-                <label className="form-label small text-muted">Address Line 1</label>
-                <input 
-                  type="text" 
-                  className="form-control" 
-                  placeholder="Street address"
-                />
-              </div>
-              <div className="col-md-12">
-                <label className="form-label small text-muted">Address Line 2</label>
-                <input 
-                  type="text" 
-                  className="form-control" 
-                  placeholder="Apartment, suite, unit, etc. (optional)"
-                />
-              </div>
-              <div className="col-md-4">
-                <label className="form-label small text-muted">City</label>
-                <input 
-                  type="text" 
-                  className="form-control" 
-                  placeholder="City"
-                />
-              </div>
+              <button type="submit" className="btn btn-dark">Save</button>
+              {success && <div className="alert alert-success mt-3">{success}</div>}
+              {error && <div className="alert alert-danger mt-3">{error}</div>}
+            </form>
               <div className="col-md-4">
                 <label className="form-label small text-muted">State</label>
                 <input 
                   type="text" 
                   className="form-control" 
-                  placeholder="Enter state"
+                  placeholder="Enter state"  value={form.state}
                 />
               </div>
               <div className="col-md-4">
@@ -165,8 +202,7 @@ const OrganizationBusinessSetup: React.FC = () => {
               <button type="button" className="btn btn-light me-2">Cancel</button>
               <button type="button" className="btn btn-dark">Save Changes</button>
             </div>
-          </form>
-        </div>
+         
       </div>
 
       {/* Agent-Specific Configuration Section */}

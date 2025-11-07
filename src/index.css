@@ -3,7 +3,7 @@
 
 /* Custom CSS Variables for Theme */
 :root {
-  --primary-color: #e91e63;
+  --primary-color: #374151;
   --primary-dark: #ad1457;
   --primary-light: #f8bbd9;
   --text-dark: #374151;
@@ -253,7 +253,7 @@ a:hover {
 .dropdown-toggle {
   font-size: 0.875rem !important;
   color: #6b7280 !important;
-  border: 1px solid #d1d5db !important;
+  border: 1px solid #d1d5db;
   background-color: white !important;
 }
 
@@ -263,7 +263,7 @@ a:hover {
 }
 
 .dropdown-toggle:focus {
-  box-shadow: 0 0 0 2px rgba(233, 30, 99, 0.1) !important;
+  /* box-shadow: 0 0 0 2px rgba(233, 30, 99, 0.1) !important; */
   border-color: var(--primary-color) !important;
 }
 
@@ -285,7 +285,7 @@ a:hover {
 }
 
 .dropdown-item:hover {
-  background-color: rgba(233, 30, 99, 0.1) !important;
+  background-color: #e9ebef !important;
   color: var(--primary-color) !important;
 }
 
@@ -296,17 +296,17 @@ a:hover {
 
 /* Settings Dropdown Specific Styles */
 .btn-light.dropdown-toggle {
-  background-color: #f8f9fa !important;
-  border: 1px solid #dee2e6 !important;
+  background-color: #f3f3f5 !important;
+  border: 1px solid #dee2e6 ;
 }
 
 .btn-light.dropdown-toggle:hover {
   background-color: #e2e6ea !important;
 }
 
-.btn-light.dropdown-toggle:focus {
+/* .btn-light.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgba(233, 30, 99, 0.25) !important;
-}
+} */
 
 /* Hide dropdown arrow for icon buttons */
 .btn-light.dropdown-toggle::after {

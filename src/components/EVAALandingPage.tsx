@@ -8,7 +8,7 @@ interface EVAALandingPageProps {
 
 const EVAALandingPage: React.FC<EVAALandingPageProps> = ({ onLogin }) => {
   const handleSignupRedirect = () => {
-    window.location.href = 'https://identitydebugdev.maximeyes.com/account/signup?productName=EVAA_Standalone&redirect_URL=';
+    window.location.href = 'https://identitydebugdev.maximeyes.com/account/signup?productName=EVAA_Standalone&redirect_URL=https://account.evaa.ai?return_page=productpurchase';
   };
 
   return (
