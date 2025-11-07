@@ -30,17 +30,17 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onSelectionComplete }) =>
     'Assistant C'
   ];
 
-  const handleContinue = () => {
-    if (selectedOrganization && selectedAssistant) {
-      onSelectionComplete(selectedOrganization, selectedAssistant);
-    }
-  };
+  // const handleContinue = () => {
+  //   if (selectedOrganization && selectedAssistant) {
+  //     onSelectionComplete(selectedOrganization, selectedAssistant);
+  //   }
+  // };
 
   const handleAdminDashboard = () => {
     onSelectionComplete('', ''); // Call without requiring selections
   };
 
-  const isButtonEnabled = selectedOrganization && selectedAssistant;
+  // const isButtonEnabled = selectedOrganization && selectedAssistant;
 
   return (
     <div className="min-vh-100 d-flex flex-column">

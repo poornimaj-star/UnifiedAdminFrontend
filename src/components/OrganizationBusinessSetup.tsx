@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 
-interface Organization {
-  id: number;
-  name: string;
-  type: string;
-  taxId: string;
-  address: string;
-  status: 'Active' | 'Inactive';
-}
+// interface Organization {
+//   id: number;
+//   name: string;
+//   type: string;
+//   taxId: string;
+//   address: string;
+//   status: 'Active' | 'Inactive';
+// }
 
 const OrganizationBusinessSetup: React.FC = () => {
   const [form, setForm] = useState({
