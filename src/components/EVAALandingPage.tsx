@@ -4,10 +4,13 @@ import evaaIcon from '../assets/evaa-Icon.png';
 
 interface EVAALandingPageProps {
   onLogin: () => void;
-  onSignup: () => void;
 }
 
-const EVAALandingPage: React.FC<EVAALandingPageProps> = ({ onLogin, onSignup }) => {
+const EVAALandingPage: React.FC<EVAALandingPageProps> = ({ onLogin }) => {
+  const handleSignupRedirect = () => {
+    window.location.href = 'https://identitydebugdev.maximeyes.com/account/signup?productName=EVAA_Standalone&redirect_URL=';
+  };
+
   return (
     <div style={{ 
       minHeight: '100vh',
@@ -74,7 +77,7 @@ const EVAALandingPage: React.FC<EVAALandingPageProps> = ({ onLogin, onSignup }) 
                     color: 'white',
                     fontSize: '0.95rem',
                   }}
-                  onClick={onSignup}
+                  onClick={handleSignupRedirect}
                 >
                   Sign Up
                 </button>
@@ -143,7 +146,7 @@ const EVAALandingPage: React.FC<EVAALandingPageProps> = ({ onLogin, onSignup }) 
                     color: 'white',
                     fontSize: '1.1rem'
                   }}
-                  onClick={onSignup}
+                  onClick={handleSignupRedirect}
                 >
                   Start Free Trial
                   <svg width="16" height="16" fill="currentColor" className="ms-1" viewBox="0 0 16 16">

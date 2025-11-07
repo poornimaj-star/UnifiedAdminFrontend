@@ -87,7 +87,7 @@ function App() {
   // Home page - EVAA Landing Page
   return (
     <>
-      <EVAALandingPage onLogin={openLoginModal} onSignup={navigateToSignup} />
+      <EVAALandingPage onLogin={openLoginModal} />
       
       {/* Login Modal */}
       <LoginModal 
