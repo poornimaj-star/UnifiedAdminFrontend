@@ -652,92 +652,96 @@ const UsersManagement: React.FC = () => {
         return;
       }
 
-      console.log('Creating user:', addUserFields);
+      console.log('📝 Creating user:', addUserFields);
 
-      // Create new user object with proper structure - use sequential ID
-      // Consider all existing IDs: from current users array AND from localUserIds tracking
-      const allUserIds = users.map((user: User) => user.id);
-      const maxFromUsers = allUserIds.length > 0 ? Math.max(...allUserIds) : 0;
-      const maxFromLocalIds = localUserIds.length > 0 ? Math.max(...localUserIds) : 0;
-
-      // Use the next available ID after the highest existing ID
-      const maxId = Math.max(maxFromUsers, maxFromLocalIds, 0);
-      const nextId = maxId + 1;
-
-      console.log('🔢 Generating sequential user ID:');
-      console.log('   All user IDs from users array:', allUserIds);
-      console.log('   Max from users array:', maxFromUsers);
-      console.log('   Local user IDs tracking:', localUserIds);
-      console.log('   Max from local IDs:', maxFromLocalIds);
-      console.log('   Final max ID:', maxId);
-      console.log('   Next ID will be:', nextId);
-
-      const newUser: User = {
-        id: nextId, // Generate sequential ID
-        username: addUserFields.fullName,
+      // Make API call to create user in the database
+      const response = await axios.post(`${Constants.API_BASE_URL}/api/users`, {
+        fullName: addUserFields.fullName,
+        role: addUserFields.role,
         email: addUserFields.email,
-        roles: [addUserFields.role],
-        permissions: Object.entries(addUserFields.permissions)
-          .filter(([_, value]) => value)
-          .map(([key, _]) => key.replace(/([A-Z])/g, ' $1').toLowerCase()),
-        lastLogin: 'Never',
-        status: addUserFields.status as 'Active' | 'Inactive' | 'Pending',
-        createdAt: new Date().toISOString().split('T')[0],
         phone: addUserFields.phoneNumber,
+        status: addUserFields.status,
         locations: addUserFields.locations,
         defaultBusiness: addUserFields.defaultBusiness,
         defaultProduct: addUserFields.defaultProduct,
-        productAccess: Object.entries(addUserFields.productAccess)
-          .filter(([_, value]) => value)
-          .map(([key, _]) => {
-            // Convert camelCase to readable format
-            const formatted = key.replace(/([A-Z])/g, ' $1').toLowerCase();
-            return formatted.charAt(0).toUpperCase() + formatted.slice(1);
-          })
-      };
+        productAccess: addUserFields.productAccess,
+        permissions: addUserFields.permissions
+      });
 
-      // Add user to the local state
-      setUsers(prevUsers => [...prevUsers, newUser]);
+      if (response.data.success) {
+        console.log('✅ User created in database:', response.data);
+        
+        // Use the verification data returned from the backend
+        const dbUser = response.data.user;
+        
+        // Helper function to parse Buffer boolean values
+        const parseBufferBoolean = (buffer: any) => {
+          if (!buffer) return false;
+          if (buffer.type === 'Buffer' && buffer.data) return buffer.data[0] === 1;
+          return Number(buffer) === 1;
+        };
 
-      // Save to localStorage for persistence
-      const localUsers = JSON.parse(localStorage.getItem('localUsers') || '[]');
-      localUsers.push(newUser);
-      localStorage.setItem('localUsers', JSON.stringify(localUsers));
+        // Create user object for display using the database data
+        const newUser: User = {
+          id: response.data.id, // Use database ID
+          username: `${dbUser.FIRST_NAME || ''} ${dbUser.LAST_NAME || ''}`.trim(),
+          email: dbUser.EMAIL,
+          roles: [addUserFields.role], // Use form data for roles since we know what was selected
+          permissions: Object.entries(addUserFields.permissions)
+            .filter(([_, value]) => value)
+            .map(([key, _]) => key.replace(/([A-Z])/g, ' $1').toLowerCase()),
+          lastLogin: 'Never',
+          status: parseBufferBoolean(dbUser.IS_ACTIVE) && !parseBufferBoolean(dbUser.IS_BLOCKED) ? 'Active' : 'Inactive',
+          createdAt: new Date().toISOString().split('T')[0],
+          phone: addUserFields.phoneNumber, // Keep form data since phone might not be in DB
+          locations: addUserFields.locations,
+          defaultBusiness: addUserFields.defaultBusiness,
+          defaultProduct: addUserFields.defaultProduct,
+          productAccess: Object.entries(addUserFields.productAccess)
+            .filter(([_, value]) => value)
+            .map(([key, _]) => {
+              // Convert camelCase to readable format
+              const formatted = key.replace(/([A-Z])/g, ' $1').toLowerCase();
+              return formatted.charAt(0).toUpperCase() + formatted.slice(1);
+            })
+        };
 
-      // Track that this ID is a local user
-      const updatedLocalUserIds = [...localUserIds, nextId];
-      setLocalUserIds(updatedLocalUserIds);
-      localStorage.setItem('localUserIds', JSON.stringify(updatedLocalUserIds));
-
-      // TODO: Make actual API call when backend endpoint is ready
-      // const response = await import('axios').then(ax => ax.default.post('/api/users', {
-      //   fullName: addUserFields.fullName,
-      //   role: addUserFields.role,
-      //   email: addUserFields.email,
-      //   phone: addUserFields.phoneNumber,
-      //   status: addUserFields.status,
-      //   locations: addUserFields.locations,
-      //   defaultBusiness: addUserFields.defaultBusiness,
-      //   defaultProduct: addUserFields.defaultProduct,
-      //   productAccess: addUserFields.productAccess,
-      //   permissions: addUserFields.permissions
-      // }));
+        // Add user to the local state
+        setUsers(prevUsers => [...prevUsers, newUser]);
+        
+        console.log('🎉 User successfully added to display table');
+      } else {
+        throw new Error('Failed to create user in database');
+      }
 
       // Close modal and reset form
       handleCloseAddModal();
 
       // Show success message
-      setSuccessMessage(`User "${newUser.username}" has been created successfully!`);
+      setSuccessMessage(`User "${addUserFields.fullName}" has been created successfully!`);
 
       // Auto-hide success message after 5 seconds
       setTimeout(() => {
         setSuccessMessage('');
       }, 5000);
 
-      console.log('User created successfully:', newUser);
-    } catch (error) {
+      console.log('✅ User created successfully and added to table');
+    } catch (error: any) {
       console.error('Error creating user:', error);
-      alert('Failed to create user. Please try again.');
+      
+      // Handle specific error responses from the backend
+      if (error.response && error.response.data) {
+        const errorData = error.response.data;
+        if (errorData.error === 'Email already exists') {
+          alert(`❌ ${errorData.message}`);
+        } else if (errorData.message) {
+          alert(`❌ Error: ${errorData.message}`);
+        } else {
+          alert(`❌ Failed to create user: ${errorData.error || 'Unknown error'}`);
+        }
+      } else {
+        alert('❌ Failed to create user. Please try again.');
+      }
     }
   };
 
@@ -893,9 +897,6 @@ const UsersManagement: React.FC = () => {
               IS_PROVIDER: isProvider ? 1 : 0,
               IS_TECHNICIAN: isTechnician ? 1 : 0,
               IS_REFERRING_PHYSICIAN: isReferringPhysician ? 1 : 0,
-              PHONE: updatedUser.phone,
-              PERMISSIONS: updatedUser.permissions.join(','),
-              UPDATE_DATE: new Date().toISOString(),
               USER_INITITALS: `${firstName.charAt(0)} ${lastName.charAt(0)}`.trim()
             });
             console.log('✅ Updated backend user via API');

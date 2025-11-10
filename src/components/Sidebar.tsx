@@ -55,7 +55,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate, onBackToMain, currentPage
     },
     {
       id: 'organization-business',
-      label: 'Business setup',
+      label: 'Organization / Business Group',
       icon: overviewIcon
     },
     {

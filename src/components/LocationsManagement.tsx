@@ -44,7 +44,7 @@ const LocationsManagement: React.FC = () => {
     console.log('📊 Total locations:', locations.length);
     locations.forEach((loc, index) => {
       const localLocationIds = JSON.parse(localStorage.getItem('localLocationIds') || '[]');
-      console.log(`  ${index + 1}. ID: ${loc.id} | Name: ${loc.name} | Type: ${localLocationIds.includes(loc.id) ? 'Local' : 'Database'}`);
+      console.log(`  ${index + 1}. ID: ${loc.id} | Name: ${loc.name} | Status: ${loc.status} | Type: ${localLocationIds.includes(loc.id) ? 'Local' : 'Database'}`);
     });
   }, [locations]);
 
@@ -66,36 +66,43 @@ const LocationsManagement: React.FC = () => {
         }
         
         try {
-          // Try to fetch from backend
-          const response = await axios.get(`${Constants.API_BASE_URL}/api/locations`);
-          const dbLocations = response.data.map((loc: any) => ({
-            id: loc.id || loc.LOCATION_ID,
-            name: loc.name || loc.LOCATION_NAME,
-            address: loc.address || '',
-            phone: loc.phone || '',
-            status: (loc.IS_ACTIVE === 1 || loc.IS_ENABLED === 1) ? 'Active' : 'Inactive',
-            city: loc.city || '',
-            state: loc.state || '',
-            zip: loc.zip || '',
-            businessId: loc.BUSINESS_ID || 1,
-            timeZone: loc.TIME_ZONE || 'UTC',
-            isDefault: loc.IS_DEFAULT || 0,
-            isEnabled: loc.IS_ENABLED || 1,
-            pmsSystem: '',
-            facilityId: '',
-            connectionString: '',
-            eligibilityId: '',
-            billingNpi: '',
-            clearinghouseId: '',
-            portalUrl: '',
-            portalContact: '',
-            senderName: '',
-            smsPhone: '',
-            locationHours: '',
-            customGreeting: '',
-            templatePreferences: '',
-            departmentSpecialty: '',
-          }));
+          // Try to fetch from backend with cache busting
+          const response = await axios.get(`${Constants.API_BASE_URL}/api/locations?_t=${Date.now()}`);
+          const dbLocations = response.data.map((loc: any) => {
+            // Convert to number to ensure proper comparison
+            const isActiveValue = Number(loc.IS_ACTIVE);
+            const status = (isActiveValue === 1) ? 'Active' : 'Inactive';
+            console.log(`📍 Initial load - Location "${loc.LOCATION_NAME}": IS_ACTIVE=${loc.IS_ACTIVE} (type: ${typeof loc.IS_ACTIVE}), converted: ${isActiveValue}, IS_ENABLED=${loc.IS_ENABLED}, Status="${status}"`);
+            
+            return {
+              id: loc.id || loc.LOCATION_ID,
+              name: loc.name || loc.LOCATION_NAME,
+              address: loc.address || '',
+              phone: loc.phone || '',
+              status: status,
+              city: loc.city || '',
+              state: loc.state || '',
+              zip: loc.zip || '',
+              businessId: loc.BUSINESS_ID || 1,
+              timeZone: loc.TIME_ZONE || 'UTC',
+              isDefault: loc.IS_DEFAULT || 0,
+              isEnabled: loc.IS_ENABLED || 1,
+              pmsSystem: '',
+              facilityId: '',
+              connectionString: '',
+              eligibilityId: '',
+              billingNpi: '',
+              clearinghouseId: '',
+              portalUrl: '',
+              portalContact: '',
+              senderName: '',
+              smsPhone: '',
+              locationHours: '',
+              customGreeting: '',
+              templatePreferences: '',
+              departmentSpecialty: '',
+            };
+          });
           
           // Migration: Fix any existing timestamp-based IDs in local locations
           let migratedLocalLocations = localLocations;
@@ -188,6 +195,13 @@ const LocationsManagement: React.FC = () => {
     zip: '',
   });
   const [editId, setEditId] = useState<number | null>(null);
+
+  // Delete confirmation modal states
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [locationToDelete, setLocationToDelete] = useState<Location | null>(null);
+
+  // Force refresh trigger
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   const handleModalChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -290,9 +304,10 @@ const LocationsManagement: React.FC = () => {
     if (modalFields.zip) dbFields.zip = modalFields.zip;
     
     try {
-      console.log('Saving location data:', modalFields);
-      console.log('Edit ID:', editId);
-      console.log('Mapped database fields:', dbFields);
+      console.log('💾 Saving location data:', modalFields);
+      console.log('📝 Edit ID:', editId);
+      console.log('🗄️ Mapped database fields:', dbFields);
+      console.log('🎯 Status mapping: modalFields.status =', modalFields.status, '→ IS_ACTIVE =', dbFields.IS_ACTIVE);
       
       if (editId) {
         // Check if this is a local location by checking localStorage tracking
@@ -323,48 +338,103 @@ const LocationsManagement: React.FC = () => {
           setSuccessMessage('Location updated successfully on live database');
         }
       } else {
+        console.log('🆕 Creating NEW location with fields:', dbFields);
+        console.log('🆕 NEW location status check - modalFields.status:', modalFields.status, '→ IS_ACTIVE:', dbFields.IS_ACTIVE);
         const response = await axios.post(`${Constants.API_BASE_URL}/api/locations`, dbFields);
-        console.log('Create response:', response.data);
+        console.log('🆕 Create response:', response.data);
         setSuccessMessage('Location saved successfully on live database');
       }
       
       setShowModal(false);
       setEditId(null);
       
-      // Refresh locations list
-      setLoading(true);
-      const response = await axios.get(`${Constants.API_BASE_URL}/api/locations`);
-      console.log('Fetched locations:', response.data);
+      console.log('✅ Save completed successfully, starting auto-refresh...');
       
-      const dbLocations = response.data.map((loc: any) => ({
-        id: loc.id || loc.LOCATION_ID,
-        name: loc.name || loc.LOCATION_NAME,
-        address: loc.address || '',
-        phone: loc.phone || '',
-        status: (loc.IS_ACTIVE === 1 || loc.IS_ENABLED === 1) ? 'Active' : 'Inactive',
-        city: loc.city || '',
-        state: loc.state || '',
-        zip: loc.zip || '',
-        businessId: loc.BUSINESS_ID || 1,
-        timeZone: loc.TIME_ZONE || 'UTC',
-        isDefault: loc.IS_DEFAULT || 0,
-        isEnabled: loc.IS_ENABLED || 1,
-        pmsSystem: '',
-        facilityId: '',
-        connectionString: '',
-        eligibilityId: '',
-        billingNpi: '',
-        clearinghouseId: '',
-        portalUrl: '',
-        portalContact: '',
-        senderName: '',
-        smsPhone: '',
-        locationHours: '',
-        customGreeting: '',
-        templatePreferences: '',
-        departmentSpecialty: '',
-      }));
-      setLocations(dbLocations);
+      // Small delay to ensure database has processed the update
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      // Refresh locations list - combine database and local locations
+      setLoading(true);
+      
+      try {
+        // Get database locations with cache busting
+        const response = await axios.get(`${Constants.API_BASE_URL}/api/locations?_t=${Date.now()}`);
+        console.log('Fetched locations after save:', response.data);
+        
+        const dbLocations = response.data.map((loc: any) => {
+          // Convert to number to ensure proper comparison
+          const isActiveValue = Number(loc.IS_ACTIVE);
+          const status = (isActiveValue === 1) ? 'Active' : 'Inactive';
+          console.log(`📍 Location "${loc.LOCATION_NAME}": IS_ACTIVE=${loc.IS_ACTIVE} (type: ${typeof loc.IS_ACTIVE}), converted: ${isActiveValue}, IS_ENABLED=${loc.IS_ENABLED}, Status="${status}"`);
+          
+          return {
+            id: loc.id || loc.LOCATION_ID,
+            name: loc.name || loc.LOCATION_NAME,
+            address: loc.address || '',
+            phone: loc.phone || '',
+            status: status,
+            city: loc.city || '',
+            state: loc.state || '',
+            zip: loc.zip || '',
+            businessId: loc.BUSINESS_ID || 1,
+            timeZone: loc.TIME_ZONE || 'UTC',
+            isDefault: loc.IS_DEFAULT || 0,
+            isEnabled: loc.IS_ENABLED || 1,
+            pmsSystem: '',
+            facilityId: '',
+            connectionString: '',
+            eligibilityId: '',
+            billingNpi: '',
+            clearinghouseId: '',
+            portalUrl: '',
+            portalContact: '',
+            senderName: '',
+            smsPhone: '',
+            locationHours: '',
+            customGreeting: '',
+            templatePreferences: '',
+            departmentSpecialty: '',
+          };
+        });
+        
+        // Get any remaining local locations
+        const localLocations = JSON.parse(localStorage.getItem('localLocations') || '[]');
+        
+        // Combine database and local locations
+        const combinedLocations = [...dbLocations, ...localLocations];
+        console.log('🔄 Refreshed combined locations:', combinedLocations);
+        console.log('📊 Database locations count:', dbLocations.length);
+        console.log('💾 Local locations count:', localLocations.length);
+        console.log('🏢 Total locations count:', combinedLocations.length);
+        
+        // Log final status values before setting state
+        combinedLocations.forEach(loc => {
+          console.log(`🎯 Final location "${loc.name}": status="${loc.status}"`);
+        });
+        
+        console.log('🔄 About to update locations state with:', combinedLocations.length, 'locations');
+        console.log('🔄 Previous locations state had:', locations.length, 'locations');
+        
+        // Clear the locations first to force React to re-render
+        setLocations([]);
+        
+        // Use setTimeout to ensure React processes the empty state first
+        setTimeout(() => {
+          console.log('🔄 Setting new locations state...');
+          setLocations(combinedLocations);
+          setRefreshTrigger(prev => {
+            const newTrigger = prev + 1;
+            console.log('🔄 Force re-render trigger:', newTrigger);
+            return newTrigger;
+          });
+        }, 50);
+      } catch (refreshErr) {
+        console.error('Error refreshing locations after save:', refreshErr);
+        // If refresh fails, just get local locations
+        const localLocations = JSON.parse(localStorage.getItem('localLocations') || '[]');
+        setLocations(localLocations);
+      }
+      
       setLoading(false);
     } catch (err: any) {
       console.error('Error saving location:', err);
@@ -505,46 +575,57 @@ const LocationsManagement: React.FC = () => {
     }
   };
 
-  const handleDeleteLocation = async (location: Location) => {
-    const confirmDelete = window.confirm(`Are you sure you want to delete "${location.name}"? This action cannot be undone.`);
-    
-    if (!confirmDelete) {
-      return;
-    }
+  const openDeleteModal = (location: Location) => {
+    setLocationToDelete(location);
+    setShowDeleteModal(true);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setShowDeleteModal(false);
+    setLocationToDelete(null);
+  };
+
+
+
+  const handleConfirmDelete = async () => {
+    if (!locationToDelete) return;
 
     try {
-      console.log('🗑️ Deleting location:', location);
+      console.log('🗑️ Deleting location:', locationToDelete);
       
       // Check if this is a local location
       const localLocationIds = JSON.parse(localStorage.getItem('localLocationIds') || '[]');
-      const isLocalLocation = localLocationIds.includes(location.id);
+      const isLocalLocation = localLocationIds.includes(locationToDelete.id);
       
       if (isLocalLocation) {
         // Delete from local storage
         const localLocations = JSON.parse(localStorage.getItem('localLocations') || '[]');
-        const updatedLocalLocations = localLocations.filter((loc: any) => loc.id !== location.id);
+        const updatedLocalLocations = localLocations.filter((loc: any) => loc.id !== locationToDelete.id);
         localStorage.setItem('localLocations', JSON.stringify(updatedLocalLocations));
         
         // Remove from local location IDs tracking
-        const updatedLocalLocationIds = localLocationIds.filter((id: number) => id !== location.id);
+        const updatedLocalLocationIds = localLocationIds.filter((id: number) => id !== locationToDelete.id);
         localStorage.setItem('localLocationIds', JSON.stringify(updatedLocalLocationIds));
         
         // Update the UI
-        setLocations(prev => prev.filter(loc => loc.id !== location.id));
-        setSuccessMessage(`Location "${location.name}" deleted from local storage.`);
+        setLocations(prev => prev.filter(loc => loc.id !== locationToDelete.id));
+        setSuccessMessage(`Location "${locationToDelete.name}" deleted from local storage.`);
       } else {
         // Delete from database
-        const response = await axios.delete(`${Constants.API_BASE_URL}/api/locations/${location.id}`);
+        const response = await axios.delete(`${Constants.API_BASE_URL}/api/locations/${locationToDelete.id}`);
         console.log('✅ Delete response:', response.data);
         
         if (response.data.success) {
           // Update the UI by removing the deleted location
-          setLocations(prev => prev.filter(loc => loc.id !== location.id));
-          setSuccessMessage(`Location "${location.name}" deleted successfully from database.`);
+          setLocations(prev => prev.filter(loc => loc.id !== locationToDelete.id));
+          setSuccessMessage(`Location "${locationToDelete.name}" deleted successfully from database.`);
         } else {
           throw new Error('Delete operation failed');
         }
       }
+
+      // Close the modal after successful deletion
+      handleCloseDeleteModal();
     } catch (err: any) {
       console.error('❌ Error deleting location:', err);
       
@@ -563,6 +644,9 @@ const LocationsManagement: React.FC = () => {
       
       // Show error message
       alert(errorMessage);
+      
+      // Close the modal even on error
+      handleCloseDeleteModal();
     }
   };
 
@@ -574,7 +658,7 @@ const LocationsManagement: React.FC = () => {
   }, [successMessage]);
 
   return (
-    <div className="container-fluid">
+    <div className="container-fluid" key={`locations-${refreshTrigger}`}>
       {/* Page Header */}
       <div className="mb-4">
         <h1 className="h4 fw-semibold text-dark mb-1">ClearView Eye Associates - Locations Data</h1>
@@ -635,7 +719,7 @@ const LocationsManagement: React.FC = () => {
             </thead>
             <tbody>
               {filteredLocations.map((location) => (
-                <tr key={location.id}>
+                <tr key={`${location.id}-${location.status}-${refreshTrigger}`}>
                   <td className="py-3">
                     <span className="text-dark">{location.name}</span>
                   </td>
@@ -661,7 +745,7 @@ const LocationsManagement: React.FC = () => {
                     <button 
                       className="btn btn-link text-decoration-none p-1 px-2" 
                       style={{ color: '#000', fontSize: '0.9rem', border: '1px solid #ddd' }} 
-                      onClick={() => handleDeleteLocation(location)}
+                      onClick={() => openDeleteModal(location)}
                     >
                       Delete
                     </button>
@@ -849,6 +933,54 @@ const LocationsManagement: React.FC = () => {
             <div className="modal-footer border-1">
               <button type="button" className="btn btn-light" onClick={handleCloseModal}>Cancel</button>
               <button type="button" className="btn btn-dark" onClick={handleSaveLocation}>Save Changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* Delete Confirmation Modal */}
+    {showDeleteModal && (
+      <div className="modal fade show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content" style={{ borderRadius: '0.75rem', border: 'none' }}>
+            <div className="modal-header border-0 pb-0">
+              <h5 className="modal-title text-dark fw-bold">Confirm Delete</h5>
+              <button
+                type="button"
+                className="btn-close"
+                onClick={handleCloseDeleteModal}
+                style={{ backgroundColor: 'transparent', border: 'none' }}
+              ></button>
+            </div>
+            <div className="modal-body pt-2">
+              <div className="text-center mb-4">
+                <div className="mb-3">
+                  <i className="fas fa-exclamation-triangle text-warning" style={{ fontSize: '3rem' }}></i>
+                </div>
+                <h6 className="text-dark mb-3">Are you sure you want to delete this location?</h6>
+                <div className="alert alert-light border" style={{ backgroundColor: '#f8f9fa' }}>
+                  <strong>Location Name:</strong> {locationToDelete?.name}<br />
+                  <small className="text-muted">This action cannot be undone.</small>
+                </div>
+              </div>
+            </div>
+            <div className="modal-footer border-0 pt-0">
+              <button
+                type="button"
+                className="btn btn-light me-2"
+                onClick={handleCloseDeleteModal}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="btn btn-danger"
+                onClick={handleConfirmDelete}
+              >
+                <i className="fas fa-trash me-2"></i>
+                Delete Location
+              </button>
             </div>
           </div>
         </div>
