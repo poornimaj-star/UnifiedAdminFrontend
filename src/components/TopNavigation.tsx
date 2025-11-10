@@ -172,8 +172,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ onLogout, onNavigate, sel
               type="button" 
               data-bs-toggle="dropdown" 
               aria-expanded="false"
-              style={{ 
-                minWidth: '180px', 
+              style={{  
                 justifyContent: 'space-between',
                 backgroundColor: '#f8f9fa',
                 border: '1px solid #e9ecef'

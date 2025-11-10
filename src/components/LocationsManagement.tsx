@@ -3,15 +3,23 @@ import React, { useState } from 'react';
 import { Constants } from './constant';
 
 interface Location {
-  locationHours?: string;
-  customGreeting?: string;
-  templatePreferences?: string;
-  departmentSpecialty?: string;
   id: number;
   name: string;
   address: string;
   phone: string;
   status: 'Active' | 'Inactive';
+  city: string;
+  state: string;
+  zip: string;
+  businessId?: number;
+  timeZone?: string;
+  isDefault?: number;
+  isEnabled?: number;
+  // Legacy fields for compatibility
+  locationHours?: string;
+  customGreeting?: string;
+  templatePreferences?: string;
+  departmentSpecialty?: string;
   pmsSystem?: string;
   facilityId?: string;
   connectionString?: string;
@@ -22,9 +30,6 @@ interface Location {
   portalContact?: string;
   senderName?: string;
   smsPhone?: string;
-  city: string;
-  state: string;
-  zip: string;
 }
 
 const LocationsManagement: React.FC = () => {
@@ -64,28 +69,32 @@ const LocationsManagement: React.FC = () => {
           // Try to fetch from backend
           const response = await axios.get(`${Constants.API_BASE_URL}/api/locations`);
           const dbLocations = response.data.map((loc: any) => ({
-            id: loc.ID,
-            name: loc.LOC_NAME,
-            address: loc.ADDRESS || '',
-            phone: loc.PHONE || '',
-            status: loc.IS_ACTIVE === 1 ? 'Active' : 'Inactive',
-            city: loc.CITY || '',
-            state: loc.STATE || '',
-            zip: loc.ZIP || '',
-            pmsSystem: loc.PMS_SYSTEM || '',
-            facilityId: loc.FACILITY_ID || '',
-            connectionString: loc.CONNECTION_STRING || '',
-            eligibilityId: loc.ELIGIBILITY_ID || '',
-            billingNpi: loc.BILLING_NPI || '',
-            clearinghouseId: loc.CLEARINGHOUSE_ID || '',
-            portalUrl: loc.PORTAL_URL || '',
-            portalContact: loc.PORTAL_CONTACT || '',
-            senderName: loc.SENDER_NAME || '',
-            smsPhone: loc.SMS_PHONE || '',
-            locationHours: loc.LOCATION_HOURS || '',
-            customGreeting: loc.CUSTOM_GREETING || '',
-            templatePreferences: loc.TEMPLATE_PREFERENCES || '',
-            departmentSpecialty: loc.DEPARTMENT_SPECIALTY || '',
+            id: loc.id || loc.LOCATION_ID,
+            name: loc.name || loc.LOCATION_NAME,
+            address: loc.address || '',
+            phone: loc.phone || '',
+            status: (loc.IS_ACTIVE === 1 || loc.IS_ENABLED === 1) ? 'Active' : 'Inactive',
+            city: loc.city || '',
+            state: loc.state || '',
+            zip: loc.zip || '',
+            businessId: loc.BUSINESS_ID || 1,
+            timeZone: loc.TIME_ZONE || 'UTC',
+            isDefault: loc.IS_DEFAULT || 0,
+            isEnabled: loc.IS_ENABLED || 1,
+            pmsSystem: '',
+            facilityId: '',
+            connectionString: '',
+            eligibilityId: '',
+            billingNpi: '',
+            clearinghouseId: '',
+            portalUrl: '',
+            portalContact: '',
+            senderName: '',
+            smsPhone: '',
+            locationHours: '',
+            customGreeting: '',
+            templatePreferences: '',
+            departmentSpecialty: '',
           }));
           
           // Migration: Fix any existing timestamp-based IDs in local locations
@@ -160,6 +169,10 @@ const LocationsManagement: React.FC = () => {
     phone: '',
     address: '',
     status: 'Active',
+    timeZone: 'UTC',
+    businessId: 1,
+    isDefault: 0,
+    isEnabled: 1,
     pmsSystem: '',
     facilityId: '',
     connectionString: '',
@@ -196,6 +209,10 @@ const LocationsManagement: React.FC = () => {
       phone: '',
       address: '',
       status: 'Active',
+      timeZone: 'UTC',
+      businessId: 1,
+      isDefault: 0,
+      isEnabled: 1,
       pmsSystem: '',
       facilityId: '',
       connectionString: '',
@@ -228,6 +245,10 @@ const LocationsManagement: React.FC = () => {
       phone: location.phone || '',
       address: location.address || '',
       status: location.status || 'Active',
+      timeZone: location.timeZone || 'UTC',
+      businessId: location.businessId || 1,
+      isDefault: location.isDefault || 0,
+      isEnabled: location.isEnabled || 1,
       pmsSystem: location.pmsSystem || '',
       facilityId: location.facilityId || '',
       connectionString: location.connectionString || '',
@@ -248,41 +269,25 @@ const LocationsManagement: React.FC = () => {
   };
 
   const handleSaveLocation = async () => {
-    // Map frontend fields to database field names - only include non-empty values
+    // Map frontend fields to database field names based on actual table structure
     const dbFields: any = {};
     
-    // Required fields
-    if (modalFields.name) dbFields.LOC_NAME = modalFields.name;
+    // Required fields using correct column names
+    if (modalFields.name) dbFields.LOCATION_NAME = modalFields.name;
     
-    // Optional fields - only include if they have values
-    if (modalFields.phone) dbFields.PHONE = modalFields.phone;
-    if (modalFields.address) dbFields.ADDRESS = modalFields.address;
-    if (modalFields.city) dbFields.CITY = modalFields.city;
-    if (modalFields.state) dbFields.STATE = modalFields.state;
-    if (modalFields.zip) dbFields.ZIP = modalFields.zip;
-    
-    // Always include status
+    // Core location fields
+    dbFields.BUSINESS_ID = 1; // Default business ID
+    dbFields.IS_DEFAULT = 0; // Default not default location
+    dbFields.TIME_ZONE = modalFields.timeZone || 'UTC';
+    dbFields.IS_ENABLED = 1; // Default enabled
     dbFields.IS_ACTIVE = modalFields.status === 'Active' ? 1 : 0;
     
-    // PMS Integration fields - only if provided
-    if (modalFields.pmsSystem) dbFields.PMS_SYSTEM = modalFields.pmsSystem;
-    if (modalFields.facilityId) dbFields.FACILITY_ID = modalFields.facilityId;
-    if (modalFields.connectionString) dbFields.CONNECTION_STRING = modalFields.connectionString;
-    if (modalFields.eligibilityId) dbFields.ELIGIBILITY_ID = modalFields.eligibilityId;
-    if (modalFields.billingNpi) dbFields.BILLING_NPI = modalFields.billingNpi;
-    if (modalFields.clearinghouseId) dbFields.CLEARINGHOUSE_ID = modalFields.clearinghouseId;
-    
-    // Portal fields - only if provided
-    if (modalFields.portalUrl) dbFields.PORTAL_URL = modalFields.portalUrl;
-    if (modalFields.portalContact) dbFields.PORTAL_CONTACT = modalFields.portalContact;
-    if (modalFields.senderName) dbFields.SENDER_NAME = modalFields.senderName;
-    if (modalFields.smsPhone) dbFields.SMS_PHONE = modalFields.smsPhone;
-    
-    // Preference fields - only if provided
-    if (modalFields.locationHours) dbFields.LOCATION_HOURS = modalFields.locationHours;
-    if (modalFields.customGreeting) dbFields.CUSTOM_GREETING = modalFields.customGreeting;
-    if (modalFields.templatePreferences) dbFields.TEMPLATE_PREFERENCES = modalFields.templatePreferences;
-    if (modalFields.departmentSpecialty) dbFields.DEPARTMENT_SPECIALTY = modalFields.departmentSpecialty;
+    // Optional legacy fields for future compatibility
+    if (modalFields.phone) dbFields.phone = modalFields.phone;
+    if (modalFields.address) dbFields.address = modalFields.address;
+    if (modalFields.city) dbFields.city = modalFields.city;
+    if (modalFields.state) dbFields.state = modalFields.state;
+    if (modalFields.zip) dbFields.zip = modalFields.zip;
     
     try {
       console.log('Saving location data:', modalFields);
@@ -297,7 +302,7 @@ const LocationsManagement: React.FC = () => {
         if (isLocalLocation) {
           console.log('Updating local location, converting to database location');
           // This is a local location - convert to database creation
-          const response = await axios.post('/api/locations', dbFields);
+          const response = await axios.post(`${Constants.API_BASE_URL}/api/locations`, dbFields);
           console.log('Create response (from local):', response.data);
           
           // Remove from local storage since it's now in database
@@ -313,12 +318,12 @@ const LocationsManagement: React.FC = () => {
           setSuccessMessage('Location moved from local storage to live database successfully');
         } else {
           // This is a real database location - update it
-          const response = await axios.put(`/api/locations/${editId}`, dbFields);
+          const response = await axios.put(`${Constants.API_BASE_URL}/api/locations/${editId}`, dbFields);
           console.log('Update response:', response.data);
           setSuccessMessage('Location updated successfully on live database');
         }
       } else {
-        const response = await axios.post('/api/locations', dbFields);
+        const response = await axios.post(`${Constants.API_BASE_URL}/api/locations`, dbFields);
         console.log('Create response:', response.data);
         setSuccessMessage('Location saved successfully on live database');
       }
@@ -328,32 +333,36 @@ const LocationsManagement: React.FC = () => {
       
       // Refresh locations list
       setLoading(true);
-      const response = await axios.get('/api/locations');
+      const response = await axios.get(`${Constants.API_BASE_URL}/api/locations`);
       console.log('Fetched locations:', response.data);
       
       const dbLocations = response.data.map((loc: any) => ({
-        id: loc.ID,
-        name: loc.LOC_NAME,
-        address: loc.ADDRESS || '',
-        phone: loc.PHONE || '',
-        status: loc.IS_ACTIVE === 1 ? 'Active' : 'Inactive',
-        city: loc.CITY || '',
-        state: loc.STATE || '',
-        zip: loc.ZIP || '',
-        pmsSystem: loc.PMS_SYSTEM || '',
-        facilityId: loc.FACILITY_ID || '',
-        connectionString: loc.CONNECTION_STRING || '',
-        eligibilityId: loc.ELIGIBILITY_ID || '',
-        billingNpi: loc.BILLING_NPI || '',
-        clearinghouseId: loc.CLEARINGHOUSE_ID || '',
-        portalUrl: loc.PORTAL_URL || '',
-        portalContact: loc.PORTAL_CONTACT || '',
-        senderName: loc.SENDER_NAME || '',
-        smsPhone: loc.SMS_PHONE || '',
-        locationHours: loc.LOCATION_HOURS || '',
-        customGreeting: loc.CUSTOM_GREETING || '',
-        templatePreferences: loc.TEMPLATE_PREFERENCES || '',
-        departmentSpecialty: loc.DEPARTMENT_SPECIALTY || '',
+        id: loc.id || loc.LOCATION_ID,
+        name: loc.name || loc.LOCATION_NAME,
+        address: loc.address || '',
+        phone: loc.phone || '',
+        status: (loc.IS_ACTIVE === 1 || loc.IS_ENABLED === 1) ? 'Active' : 'Inactive',
+        city: loc.city || '',
+        state: loc.state || '',
+        zip: loc.zip || '',
+        businessId: loc.BUSINESS_ID || 1,
+        timeZone: loc.TIME_ZONE || 'UTC',
+        isDefault: loc.IS_DEFAULT || 0,
+        isEnabled: loc.IS_ENABLED || 1,
+        pmsSystem: '',
+        facilityId: '',
+        connectionString: '',
+        eligibilityId: '',
+        billingNpi: '',
+        clearinghouseId: '',
+        portalUrl: '',
+        portalContact: '',
+        senderName: '',
+        smsPhone: '',
+        locationHours: '',
+        customGreeting: '',
+        templatePreferences: '',
+        departmentSpecialty: '',
       }));
       setLocations(dbLocations);
       setLoading(false);
@@ -496,6 +505,67 @@ const LocationsManagement: React.FC = () => {
     }
   };
 
+  const handleDeleteLocation = async (location: Location) => {
+    const confirmDelete = window.confirm(`Are you sure you want to delete "${location.name}"? This action cannot be undone.`);
+    
+    if (!confirmDelete) {
+      return;
+    }
+
+    try {
+      console.log('🗑️ Deleting location:', location);
+      
+      // Check if this is a local location
+      const localLocationIds = JSON.parse(localStorage.getItem('localLocationIds') || '[]');
+      const isLocalLocation = localLocationIds.includes(location.id);
+      
+      if (isLocalLocation) {
+        // Delete from local storage
+        const localLocations = JSON.parse(localStorage.getItem('localLocations') || '[]');
+        const updatedLocalLocations = localLocations.filter((loc: any) => loc.id !== location.id);
+        localStorage.setItem('localLocations', JSON.stringify(updatedLocalLocations));
+        
+        // Remove from local location IDs tracking
+        const updatedLocalLocationIds = localLocationIds.filter((id: number) => id !== location.id);
+        localStorage.setItem('localLocationIds', JSON.stringify(updatedLocalLocationIds));
+        
+        // Update the UI
+        setLocations(prev => prev.filter(loc => loc.id !== location.id));
+        setSuccessMessage(`Location "${location.name}" deleted from local storage.`);
+      } else {
+        // Delete from database
+        const response = await axios.delete(`${Constants.API_BASE_URL}/api/locations/${location.id}`);
+        console.log('✅ Delete response:', response.data);
+        
+        if (response.data.success) {
+          // Update the UI by removing the deleted location
+          setLocations(prev => prev.filter(loc => loc.id !== location.id));
+          setSuccessMessage(`Location "${location.name}" deleted successfully from database.`);
+        } else {
+          throw new Error('Delete operation failed');
+        }
+      }
+    } catch (err: any) {
+      console.error('❌ Error deleting location:', err);
+      
+      let errorMessage = 'Failed to delete location';
+      
+      if (err.response) {
+        const serverError = err.response?.data?.error || err.response?.data?.message || err.response?.data;
+        errorMessage = `Server Error (${err.response.status}): ${typeof serverError === 'string' ? serverError : JSON.stringify(serverError)}`;
+      } else if (err.request) {
+        errorMessage = 'No response from server. Check if backend is running.';
+      } else {
+        errorMessage = `Request Error: ${err.message}`;
+      }
+      
+      setError(errorMessage);
+      
+      // Show error message
+      alert(errorMessage);
+    }
+  };
+
   React.useEffect(() => {
     if (successMessage) {
       const timer = setTimeout(() => setSuccessMessage(''), 3000);
@@ -560,7 +630,7 @@ const LocationsManagement: React.FC = () => {
 
                 <th className="fw-semibold text-dark" style={{ fontSize: '0.875rem' }}>Phone</th>
                 <th className="fw-semibold text-dark" style={{ fontSize: '0.875rem' }}>Status</th>
-                <th className="fw-semibold text-dark text-end" style={{ fontSize: '0.875rem' }}>Action</th>
+                <th className="fw-semibold text-dark text-end" style={{ fontSize: '0.875rem' }}>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -581,7 +651,20 @@ const LocationsManagement: React.FC = () => {
                     </span>
                   </td>
                   <td className="py-3 text-end">
-                    <button className="btn btn-link text-decoration-none p-1 px-2" style={{ color: '#000', fontSize: '0.9rem', border: '1px solid #ddd' }} onClick={() => openEditModal(location)}>Edit</button>
+                    <button 
+                      className="btn btn-link text-decoration-none p-1 px-2 me-2" 
+                      style={{ color: '#000', fontSize: '0.9rem', border: '1px solid #ddd' }} 
+                      onClick={() => openEditModal(location)}
+                    >
+                      Edit
+                    </button>
+                    <button 
+                      className="btn btn-link text-decoration-none p-1 px-2" 
+                      style={{ color: '#000', fontSize: '0.9rem', border: '1px solid #ddd' }} 
+                      onClick={() => handleDeleteLocation(location)}
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}

@@ -114,7 +114,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onSelectionComplete }) =>
                   <path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
                 </svg>
               </button>
-              <ul className="dropdown-menu">
+              <ul className="dropdown-menu" style={{ minWidth: '180px'}}>
                 {assistants.map((assistant) => (
                   <li key={assistant}>
                     <button 
