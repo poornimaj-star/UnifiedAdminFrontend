@@ -4,8 +4,9 @@ import SignupPage from './components/SignupPage'
 import AdminDashboard from './components/AdminDashboard'
 import WelcomeScreen from './components/WelcomeScreen'
 import EVAALandingPage from './components/EVAALandingPage'
+import MaximEyesLogin from './components/MaximEyesLogin'
 
-type PageView = 'home' | 'signup' | 'welcome' | 'admin'
+type PageView = 'home' | 'signup' | 'welcome' | 'admin' | 'maximeyes-login'
 
 function App() {
   const [currentPage, setCurrentPage] = useState<PageView>('home')
@@ -55,6 +56,10 @@ function App() {
     setIsLoginModalOpen(false)
   }
 
+  const navigateToMaximEyesLogin = () => {
+    setCurrentPage('maximeyes-login')
+  }
+
   // Show Welcome Screen when logged in but no organization/assistant selected
   if (currentPage === 'welcome' && isLoggedIn) {
     return <WelcomeScreen onSelectionComplete={handleSelectionComplete} />
@@ -65,12 +70,17 @@ function App() {
     return <AdminDashboard onLogout={handleLogout} onBackToMain={handleBackToMain} selectedOrganization={selectedOrganization} selectedAssistant={selectedAssistant} />
   }
 
+  if (currentPage === 'maximeyes-login') {
+    return <MaximEyesLogin onBackToSignup={navigateToSignup} />
+  }
+
   if (currentPage === 'signup') {
     return (
       <>
         <SignupPage 
           onBackToHome={navigateToHome}
           onSwitchToLogin={openLoginModal}
+          onMaximEyesLogin={navigateToMaximEyesLogin}
         />
         
         {/* Login Modal available on signup page */}
@@ -87,7 +97,7 @@ function App() {
   // Home page - EVAA Landing Page
   return (
     <>
-      <EVAALandingPage onLogin={openLoginModal} />
+      <EVAALandingPage onLogin={openLoginModal} onSignup={navigateToSignup} />
       
       {/* Login Modal */}
       <LoginModal 
