@@ -11,6 +11,7 @@ import InsuranceManagement from './InsuranceManagement';
 import LocationsManagement from './LocationsManagement';
 import ProvidersManagement from './ProvidersManagement';
 import OrganizationBusinessSetup from './OrganizationBusinessSetup';
+import BusinessPage from './BusinessPage';
 
 interface AdminDashboardProps {
   onLogout: () => void;
@@ -19,7 +20,7 @@ interface AdminDashboardProps {
   selectedAssistant: string;
 }
 
-type DashboardPage = 'overview' | 'users' | 'licenses' | 'phone-sms' | 'payment' | 'data-tables' | 'organization-business' | 'locations' | 'providers' | 'insurances' | 'pms-ehr';
+type DashboardPage = 'overview' | 'users' | 'licenses' | 'phone-sms' | 'payment' | 'data-tables' | 'organization-business' | 'business' | 'locations' | 'providers' | 'insurances' | 'pms-ehr';
 
 const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout, onBackToMain, selectedOrganization, selectedAssistant }) => {
   const [currentPage, setCurrentPage] = useState<DashboardPage>('overview');
@@ -48,6 +49,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout, onBackToMain,
         return <DataTables />;
       case 'organization-business':
         return <OrganizationBusinessSetup />;
+      case 'business':
+        return <BusinessPage />;
       case 'locations':
         return <LocationsManagement />;
       case 'providers':
