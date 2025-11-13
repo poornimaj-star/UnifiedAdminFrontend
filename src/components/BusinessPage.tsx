@@ -14,6 +14,11 @@ interface Business {
   update_by: number | null;
   update_date: string;
   update_process: number | string | null;
+  dba_name?: string;
+  address_line_one?: string;
+  address_line_two?: string;
+  phone_number?: number | string;
+  extension?: string;
 }
 const initialForm = {
   businessName: '',
@@ -36,6 +41,11 @@ const initialForm = {
   clearinghouseId: '',
   billingNpi: '',
   taxonomyCode: '',
+  dbaName: '',
+  addressLineOne: '',
+  addressLineTwo: '',
+  phoneNumber: '',
+  extension: '',
 };
 
 const BusinessPage: React.FC = () => {
@@ -107,6 +117,11 @@ const BusinessPage: React.FC = () => {
       clearinghouseId: '',
       billingNpi: '',
       taxonomyCode: '',
+      dbaName: business.dba_name || '',
+      addressLineOne: business.address_line_one || '',
+      addressLineTwo: business.address_line_two || '',
+      phoneNumber: business.phone_number ? String(business.phone_number) : '',
+      extension: business.extension || '',
     });
     setEditId(business.business_id);
     setShowModal(true);
@@ -120,15 +135,20 @@ const BusinessPage: React.FC = () => {
   const handleSubmit = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     // Map frontend fields to DB columns
-    const dbFields: any = {};
-    dbFields.organization_id = 1; // Set as needed or make dynamic
-    dbFields.business_name = form.businessName;
-    dbFields.is_enabled = 1;
-    dbFields.is_active = 1;
-    dbFields.create_by = 1;
-    dbFields.create_process = 1;
-    dbFields.update_by = 1;
-    dbFields.update_process = 1;
+  const dbFields: any = {};
+  dbFields.organization_id = 1; // Set as needed or make dynamic
+  dbFields.business_name = form.businessName;
+  dbFields.is_enabled = 1;
+  dbFields.is_active = 1;
+  dbFields.create_by = 1;
+  dbFields.create_process = 1;
+  dbFields.update_by = 1;
+  dbFields.update_process = 1;
+  dbFields.dba_name = form.dbaName;
+  dbFields.address_line_one = form.addressLineOne;
+  dbFields.address_line_two = form.addressLineTwo;
+  dbFields.phone_number = form.phoneNumber ? parseInt(form.phoneNumber) : null;
+  dbFields.extension = form.extension;
 
     try {
       console.log('💾 Saving business data:', form);
@@ -261,25 +281,20 @@ const BusinessPage: React.FC = () => {
               <div style={{ color: '#888', fontSize: '1rem', marginBottom: 18 }}>Business details for healthcare operations</div>
               <div>
                 <div style={{ background: '#faf9f5', borderRadius: 12, padding: '24px', margin: '24px 0 0 0', border: '1px solid #f3f1ea' }}>
-                    <div style={{ display: 'flex', gap: 16, marginBottom: 12 }}>
-                        <div style={{ flex: 1 }}>
-                        <label style={{ fontWeight: 500 }}>Business Name</label><br />
-                        <input name="businessName" value={form.businessName} onChange={handleInputChange} placeholder="Enter business name" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, marginBottom: 0, fontSize: '1rem' }} required />
-                        </div>
-                        <div style={{ flex: 1 }}>
-                        <label style={{ fontWeight: 500 }}>Website</label><br />
-                        <input name="website" value={form.website} onChange={handleInputChange} placeholder="https://example.com" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
-                        </div>
-                        <div style={{ flex: 1 }}>
-                        <label style={{ fontWeight: 500 }}>Country</label><br />
-                        <select name="country" value={form.country} onChange={handleInputChange} style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }}>
-                            <option>United States of America</option>
-                            <option>Canada</option>
-                            <option>United Kingdom</option>
-                            <option>India</option>
-                        </select>
-                        </div>
-                    </div>
+              <div style={{ display: 'flex', gap: 16, marginBottom: 12 }}>
+                <div style={{ flex: 1 }}>
+                <label style={{ fontWeight: 500 }}>Business Name</label><br />
+                <input name="businessName" value={form.businessName} onChange={handleInputChange} placeholder="Enter business name" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, marginBottom: 0, fontSize: '1rem' }} required />
+                </div>
+                <div style={{ flex: 1 }}>
+                <label style={{ fontWeight: 500 }}>DBA Name</label><br />
+                <input name="dbaName" value={form.dbaName} onChange={handleInputChange} placeholder="Doing Business As" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
+                </div>
+                <div style={{ flex: 1 }}>
+                <label style={{ fontWeight: 500 }}>Website</label><br />
+                <input name="website" value={form.website} onChange={handleInputChange} placeholder="https://example.com" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
+                </div>                
+              </div>
                     <div style={{ display: 'flex', gap: 16, marginBottom: 12 }}>
                         <div style={{ flex: 1 }}>
                         <label style={{ fontWeight: 500 }}>Group NPI ID <span title="Group National Provider Identifier">&#9432;</span></label><br />
@@ -300,14 +315,14 @@ const BusinessPage: React.FC = () => {
                         <input name="taxId" value={form.taxId} onChange={handleInputChange} placeholder="XX-XXXXXXXX" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
                         </div>
                     </div>
-                    <div style={{ marginBottom: 12 }}>
-                        <label style={{ fontWeight: 500 }}>Address Line 1</label><br />
-                        <input name="address1" value={form.address1} onChange={handleInputChange} placeholder="Street address" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
-                    </div>
-                    <div style={{ marginBottom: 12 }}>
-                        <label style={{ fontWeight: 500 }}>Address Line 2</label><br />
-                        <input name="address2" value={form.address2} onChange={handleInputChange} placeholder="Apartment, suite, unit, etc. (optional)" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
-                    </div>
+          <div style={{ marginBottom: 12 }}>
+            <label style={{ fontWeight: 500 }}>Address Line 1</label><br />
+            <input name="addressLineOne" value={form.addressLineOne} onChange={handleInputChange} placeholder="Street address" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
+          </div>
+          <div style={{ marginBottom: 12 }}>
+            <label style={{ fontWeight: 500 }}>Address Line 2</label><br />
+            <input name="addressLineTwo" value={form.addressLineTwo} onChange={handleInputChange} placeholder="Apartment, suite, unit, etc. (optional)" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
+          </div>
                     <div style={{ display: 'flex', gap: 16, marginBottom: 12 }}>
                         <div style={{ flex: 1 }}>
                         <label style={{ fontWeight: 500 }}>City</label><br />
@@ -321,17 +336,26 @@ const BusinessPage: React.FC = () => {
                         <label style={{ fontWeight: 500 }}>Zip Code</label><br />
                         <input name="zip" value={form.zip} onChange={handleInputChange} placeholder="XXXXX" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
                         </div>
-                    </div>
-                    <div style={{ display: 'flex', gap: 16, marginBottom: 12 }}>
                         <div style={{ flex: 1 }}>
-                        <label style={{ fontWeight: 500 }}>Phone</label><br />
-                        <input name="phone" value={form.phone} onChange={handleInputChange} placeholder="(XXX) XXX-XXXX" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
-                        </div>
-                        <div style={{ flex: 1 }}>
-                        <label style={{ fontWeight: 500 }}>Ext</label><br />
-                        <input name="ext" value={form.ext} onChange={handleInputChange} placeholder="Extension" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
+                        <label style={{ fontWeight: 500 }}>Country</label><br />
+                        <select name="country" value={form.country} onChange={handleInputChange} style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }}>
+                          <option>United States of America</option>
+                          <option>Canada</option>
+                          <option>United Kingdom</option>
+                          <option>India</option>
+                        </select>
                         </div>
                     </div>
+          <div style={{ display: 'flex', gap: 16, marginBottom: 12 }}>
+            <div style={{ flex: 1 }}>
+            <label style={{ fontWeight: 500 }}>Phone Number</label><br />
+            <input name="phoneNumber" value={form.phoneNumber} onChange={handleInputChange} placeholder="Enter phone number" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
+            </div>
+            <div style={{ flex: 1 }}>
+            <label style={{ fontWeight: 500 }}>Extension</label><br />
+            <input name="extension" value={form.extension} onChange={handleInputChange} placeholder="Extension" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
+            </div>
+          </div>
                     <div style={{ marginBottom: 18 }}>
                       <label style={{ fontWeight: 500 }}>Logo</label><br />
                       <input

@@ -2,20 +2,20 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Constants } from './constant';
 
+// Add missing fields to Provider interface
 interface Provider {
-  provider_id: number;
+  provider_id?: number;
   first_name: string;
-  last_name: string;
   middle_name: string;
+  last_name: string;
   specialty: string;
   NPI: string;
   is_enabled: number;
   is_active: number;
-  create_by: number;
-  create_process: number;
-  create_date: string;
-  update_process: number;
-  update_date: string;
+  suffix?: string;
+  credentials?: string;
+  email?: string;
+  phone?: string;
 }
 
 const ProvidersManagement: React.FC = () => {
@@ -87,15 +87,21 @@ const ProvidersManagement: React.FC = () => {
   const [refreshKey, setRefreshKey] = useState(0);
   
   // Form state for new provider - matching your table columns
-  const [formData, setFormData] = useState({
+  const initialProviderForm = {
     first_name: '',
     last_name: '',
     middle_name: '',
     specialty: '',
     NPI: '',
     is_enabled: 1,
-    is_active: 1
-  });
+    is_active: 1,
+    suffix: '',
+    credentials: '',
+    email: '',
+    phone: '',
+  };
+
+  const [formData, setFormData] = useState(initialProviderForm);
 
   const fetchProviders = async () => {
     try {
@@ -135,9 +141,13 @@ const ProvidersManagement: React.FC = () => {
       last_name: provider.last_name,
       middle_name: provider.middle_name || '',
       specialty: provider.specialty || '',
-      NPI: provider.NPI,
-      is_enabled: provider.is_enabled,
-      is_active: provider.is_active
+      NPI: provider.NPI || '',
+      is_enabled: provider.is_enabled ?? 1,
+      is_active: provider.is_active ?? 1,
+      suffix: provider.suffix || '',
+      credentials: provider.credentials || '',
+      email: provider.email || '',
+      phone: provider.phone || '',
     });
     setShowAddModal(true);
   };
@@ -147,15 +157,7 @@ const ProvidersManagement: React.FC = () => {
     setIsEditMode(false);
     setEditingProvider(null);
     // Reset form data when closing
-    setFormData({
-      first_name: '',
-      last_name: '',
-      middle_name: '',
-      specialty: '',
-      NPI: '',
-      is_enabled: 1,
-      is_active: 1
-    });
+    setFormData(initialProviderForm);
     setErrorMessage('');
     setSuccessMessage('');
   };
@@ -187,13 +189,8 @@ const ProvidersManagement: React.FC = () => {
 
       // Prepare data for API - match the exact table columns
       const providerData = {
-        first_name: formData.first_name,
-        last_name: formData.last_name,
-        middle_name: formData.middle_name,
-        specialty: formData.specialty,
-        NPI: formData.NPI,
-        is_enabled: formData.is_enabled,
-        is_active: formData.is_active,
+        ...formData,
+        is_active: typeof formData.is_active === 'string' ? (formData.is_active === 'Active' ? 1 : 0) : formData.is_active,
         ...(isEditMode ? {
           update_by: 1, // Admin user ID
           update_process: 2 // Provider update process
@@ -358,7 +355,7 @@ const ProvidersManagement: React.FC = () => {
       {showAddModal && (
         <div className="modal fade show" style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }} tabIndex={-1}>
           <div className="modal-dialog modal-dialog-centered modal-lg justify-content-center">
-            <div className="modal-content" style={{ borderRadius: '0.75rem', width: '30rem' }}>
+            <div className="modal-content" style={{ borderRadius: '0.75rem' }}>
               <div className="modal-header border-0 pb-0">
                 <h5 className="modal-title fw-semibold">{isEditMode ? 'Edit Provider' : 'Add New Provider'}</h5>
                 <button type="button" className="btn-close" onClick={handleCloseModal}></button>
@@ -367,68 +364,56 @@ const ProvidersManagement: React.FC = () => {
                 <p className="text-muted small mb-4">{isEditMode ? 'Update provider information and agent-specific settings' : 'Collect provider information and agent-specific settings'}</p>
                 
                 <form style={{height: 'calc(100vh - 15rem)', overflowY: 'auto', overflowX: 'hidden'}}>
-                  {/* Provider Information Section */}
-                  <div className="mb-4">
-                    <h6 className="fw-semibold mb-3">Provider Information</h6>
+                  {/* Provider Information */}
+                  <div className="mb-4 p-3 border rounded" style={{ background: '#fff' }}>
+                    <h6 className="fw-medium mb-3 text-dark">Provider Information</h6>
                     <div className="row g-3">
-                      <div className="col-md-6">
-                        <label className="form-label small text-muted">First Name <span className="text-danger">*</span></label>
-                        <input 
-                          type="text" 
-                          name="first_name"
-                          className="form-control" 
-                          placeholder="Enter first name" 
-                          value={formData.first_name}
-                          onChange={handleFormChange}
-                          required
-                        />
+                      <div className="col-md-3">
+                        <label className="form-label small text-dark">First Name</label>
+                        <input type="text" className="form-control" name="first_name" value={formData.first_name} onChange={handleFormChange} placeholder="First name" />
                       </div>
-                      <div className="col-md-6">
-                        <label className="form-label small text-muted">Last Name <span className="text-danger">*</span></label>
-                        <input 
-                          type="text" 
-                          name="last_name"
-                          className="form-control" 
-                          placeholder="Enter last name" 
-                          value={formData.last_name}
-                          onChange={handleFormChange}
-                          required
-                        />
-                      </div>                      
-                      <div className="col-md-6">
-                        <label className="form-label small text-muted">NPI Number <span className="text-danger">*</span></label>
-                        <input 
-                          type="text" 
-                          name="NPI"
-                          className="form-control" 
-                          placeholder="10-digit NPI" 
-                          value={formData.NPI}
-                          onChange={handleFormChange}
-                          required
-                        />
+                      <div className="col-md-3">
+                        <label className="form-label small text-dark">Middle Name</label>
+                        <input type="text" className="form-control" name="middle_name" value={formData.middle_name} onChange={handleFormChange} placeholder="Middle name" />
                       </div>
-                      <div className="col-md-6">
-                        <label className="form-label small text-muted">Specialty</label>
-                        <input 
-                          type="text" 
-                          name="specialty"
-                          className="form-control" 
-                          placeholder="e.g., Optometry" 
-                          value={formData.specialty}
-                          onChange={handleFormChange}
-                        />
+                      <div className="col-md-3">
+                        <label className="form-label small text-dark">Last Name</label>
+                        <input type="text" className="form-control" name="last_name" value={formData.last_name} onChange={handleFormChange} placeholder="Last name" />
                       </div>
-                      <div className="col-md-6">
-                        <label className="form-label small text-muted">Status</label>
-                        <select 
-                          name="is_active"
-                          className="form-select"
-                          value={formData.is_active}
-                          onChange={handleFormChange}
-                        >
+                      <div className="col-md-3">
+                        <label className="form-label small text-dark">Suffix</label>
+                        <input type="text" className="form-control" name="suffix" value={formData.suffix} onChange={handleFormChange} placeholder="Jr., Sr., III" />
+                      </div>
+                      <div className="col-md-3">
+                        <label className="form-label small text-dark">Credentials</label>
+                        <input type="text" className="form-control" name="credentials" value={formData.credentials} onChange={handleFormChange} placeholder="MD, DO, OD" />
+                      </div>
+                      <div className="col-md-3">
+                        <label className="form-label small text-dark">Specialty</label>
+                        <input type="text" className="form-control" name="specialty" value={formData.specialty} onChange={handleFormChange} placeholder="e.g., Ophthalmology" />
+                      </div>
+                      <div className="col-md-3">
+                        <label className="form-label small text-dark">NPI Number</label>
+                        <input type="text" className="form-control" name="NPI" value={formData.NPI} onChange={handleFormChange} placeholder="10-digit NPI" />
+                      </div>
+                      <div className="col-md-3">
+                        <label className="form-label small text-dark">Email</label>
+                        <input type="email" className="form-control" name="email" value={formData.email} onChange={handleFormChange} placeholder="provider@example.com" />
+                      </div>
+                      <div className="col-md-3">
+                        <label className="form-label small text-dark">Phone</label>
+                        <input type="text" className="form-control" name="phone" value={formData.phone} onChange={handleFormChange} placeholder="(XXX) XXX-XXXX" />
+                      </div>
+                      <div className="col-md-3">
+                        <label className="form-label small text-dark">Status</label>
+                        <select className="form-select" name="is_active" value={formData.is_active} onChange={handleFormChange}>
                           <option value={1}>Active</option>
                           <option value={0}>Inactive</option>
                         </select>
+                      </div>
+                      <div className="col-md-3 d-flex align-items-center">
+                        <label className="form-label small text-dark me-2">Enabled</label>
+                        <input type="checkbox" name="is_enabled" checked={!!formData.is_enabled} onChange={e => setFormData(prev => ({ ...prev, is_enabled: e.target.checked ? 1 : 0 }))} />
                       </div>
                     </div>
                   </div>

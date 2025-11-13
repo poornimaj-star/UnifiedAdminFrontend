@@ -77,8 +77,8 @@ const LocationsManagement: React.FC = () => {
             return {
               id: loc.id || loc.LOCATION_ID,
               name: loc.name || loc.LOCATION_NAME,
-              address: loc.address || '',
-              phone: loc.phone || '',
+              address: loc.address || loc.ADDRESS || '',
+              phone: loc.phone || loc.PHONE_NUMBER || '',
               status: status,
               city: loc.city || '',
               state: loc.state || '',
@@ -285,20 +285,19 @@ const LocationsManagement: React.FC = () => {
   const handleSaveLocation = async () => {
     // Map frontend fields to database field names based on actual table structure
     const dbFields: any = {};
-    
     // Required fields using correct column names
     if (modalFields.name) dbFields.LOCATION_NAME = modalFields.name;
-    
-    // Core location fields
     dbFields.BUSINESS_ID = 1; // Default business ID
     dbFields.IS_DEFAULT = 0; // Default not default location
     dbFields.TIME_ZONE = modalFields.timeZone || 'UTC';
     dbFields.IS_ENABLED = 1; // Default enabled
     dbFields.IS_ACTIVE = modalFields.status === 'Active' ? 1 : 0;
-    
+    // New columns for backend
+    if (modalFields.phone) dbFields.PHONE_NUMBER = modalFields.phone;
+    else dbFields.PHONE_NUMBER = '';
+    if (modalFields.address) dbFields.ADDRESS = modalFields.address;
+    else dbFields.ADDRESS = '';
     // Optional legacy fields for future compatibility
-    if (modalFields.phone) dbFields.phone = modalFields.phone;
-    if (modalFields.address) dbFields.address = modalFields.address;
     if (modalFields.city) dbFields.city = modalFields.city;
     if (modalFields.state) dbFields.state = modalFields.state;
     if (modalFields.zip) dbFields.zip = modalFields.zip;
@@ -370,8 +369,8 @@ const LocationsManagement: React.FC = () => {
           return {
             id: loc.id || loc.LOCATION_ID,
             name: loc.name || loc.LOCATION_NAME,
-            address: loc.address || '',
-            phone: loc.phone || '',
+            address: loc.address || loc.ADDRESS || '',
+            phone: loc.phone || loc.PHONE_NUMBER || '',
             status: status,
             city: loc.city || '',
             state: loc.state || '',

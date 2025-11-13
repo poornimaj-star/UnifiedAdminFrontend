@@ -140,11 +140,13 @@ const OrganizationBusinessSetup: React.FC = () => {
         IS_SCRIBE_ENABLED: true, // Hard-coded value
         IS_ACTIVE: true, // Hard-coded value
         
+        // New columns
+        ADDRESS_LINE_ONE: form.addressLine1,
+        ADDRESS_LINE_TWO: form.addressLine2,
+        TAX_ID: form.taxId,
+        
         // Additional fields (not in database but for form completeness)
-        taxId: form.taxId,
         country: form.country,
-        addressLine1: form.addressLine1,
-        addressLine2: form.addressLine2,
         city: form.city,
         state: form.state,
         zipCode: form.zipCode,
