@@ -45,7 +45,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onSelectionComplete }) =>
   return (
     <div className="min-vh-100 d-flex flex-column">
       {/* Top Navigation */}
-      <header className="navbar navbar-expand-lg bg-white border-bottom shadow-sm" style={{ height: '60px', zIndex: 1030 }}>
+      <header className="navbar navbar-expand-lg bg-white shadow-sm" style={{ height: '60px', zIndex: 1030, borderBottom: '1px solid #300d2126' }}>
         <div className="container-fluid px-4">
           <div className="d-flex align-items-center gap-3">
             <img 

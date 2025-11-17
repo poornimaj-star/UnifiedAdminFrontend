@@ -34,7 +34,7 @@ interface Location {
 
 const LocationsManagement: React.FC = () => {
   const [locations, setLocations] = useState<Location[]>([]);
-  const [, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState('');
 
@@ -155,10 +155,13 @@ const LocationsManagement: React.FC = () => {
   }, []);
 
   const [searchTerm, setSearchTerm] = useState('');
+  const [showInactive, setShowInactive] = useState(false);
 
   const filteredLocations = locations.filter(location => {
-    return location.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-           location.address.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = location.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      location.address.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = showInactive ? true : location.status === 'Active';
+    return matchesSearch && matchesStatus;
   });
 
   // Debug: Log filtered locations
@@ -657,7 +660,26 @@ const LocationsManagement: React.FC = () => {
   }, [successMessage]);
 
   return (
-    <div className="container-fluid" key={`locations-${refreshTrigger}`}>
+    <div className="container-fluid" key={`locations-${refreshTrigger}`}> 
+      {/* Loader Overlay */}
+      {loading && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          background: 'rgba(255,255,255,0.7)',
+          zIndex: 2000,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          <div className="spinner-border text-primary" role="status" style={{ width: 60, height: 60 }}>
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      )}
       {/* Page Header */}
       <div className="mb-4">
         <h1 className="h4 fw-semibold text-dark mb-1">ClearView Eye Associates - Locations Data</h1>
@@ -681,7 +703,7 @@ const LocationsManagement: React.FC = () => {
 
           {/* Search Bar and Add Button */}
           <div className="row g-3 mb-4">
-            <div className="col-md-10">
+            <div className="col-md-8">
               <div className="position-relative">
                 <span className="position-absolute top-50 start-0 translate-middle-y ms-3 text-muted">🔍</span>
                 <input
@@ -691,6 +713,20 @@ const LocationsManagement: React.FC = () => {
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
+              </div>
+            </div>
+            <div className="col-md-2 d-flex align-items-center justify-content-center" style={{border: '1px solid #ddd', borderRadius:'.5rem'}}>
+              <div className="form-check form-switch">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id="showInactiveSwitch"
+                  checked={showInactive}
+                  onChange={() => setShowInactive((prev) => !prev)}
+                />
+                <label className="form-check-label ms-2" htmlFor="showInactiveSwitch">
+                  Show Inactive
+                </label>
               </div>
             </div>
             <div className="col-md-2">

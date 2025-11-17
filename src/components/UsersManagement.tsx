@@ -20,7 +20,7 @@ interface User {
 
 const UsersManagement: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
-  const [, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [, setError] = useState<string | null>(null);
   const [localUserIds, setLocalUserIds] = useState<number[]>([]);
 
@@ -995,6 +995,25 @@ const UsersManagement: React.FC = () => {
 
   return (
     <div className="container-fluid">
+      {/* Loader Overlay */}
+      {loading && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          background: 'rgba(255,255,255,0.7)',
+          zIndex: 2000,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          <div className="spinner-border text-primary" role="status" style={{ width: 60, height: 60 }}>
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      )}
       {/* Page Header */}
       <div className="mb-4">
         <div className="d-flex justify-content-between align-items-center">

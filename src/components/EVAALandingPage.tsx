@@ -1,6 +1,16 @@
 import React from 'react';
 import evaaImage from '../assets/evaaImage.png';
 import evaaIcon from '../assets/evaa-Icon.png';
+import {
+  MAXIMEYES_CONNECT_URL,
+  CLIENT_ID,
+  COMMON_ADMIN_URL,
+  LOGIN_SCOPE,
+  LOGIN_AUD,
+  LOGIN_STATE,
+  LOGIN_SHOWUSERNAME,
+  LOGIN_RESPONSE_TYPE
+} from '../config';
 
 interface EVAALandingPageProps {
   onLogin: () => void;
@@ -8,8 +18,17 @@ interface EVAALandingPageProps {
 }
 
 const EVAALandingPage: React.FC<EVAALandingPageProps> = ({ onLogin, onSignup }) => {
-  const handleSignupRedirect = () => {
-    window.location.href = 'https://identitydebugdev.maximeyes.com/account/signup?productName=EVAA_Standalone&redirect_URL=https://account.evaa.ai?return_page=productpurchase';
+
+  const handleLoginRedirect = () => {
+    const url = `${MAXIMEYES_CONNECT_URL}/connect/authorize?` +
+      `redirect_uri=${encodeURIComponent(COMMON_ADMIN_URL)}` +
+      `&scope=${encodeURIComponent(LOGIN_SCOPE)}` +
+      `&response_type=${encodeURIComponent(LOGIN_RESPONSE_TYPE)}` +
+      `&state=${encodeURIComponent(LOGIN_STATE)}` +
+      `&aud=${encodeURIComponent(LOGIN_AUD)}` +
+      `&client_id=${encodeURIComponent(CLIENT_ID)}` +
+      `&showusername=${encodeURIComponent(LOGIN_SHOWUSERNAME)}`;
+    window.location.href = url;
   };
 
   return (
@@ -63,7 +82,7 @@ const EVAALandingPage: React.FC<EVAALandingPageProps> = ({ onLogin, onSignup }) 
                 <button 
                   className="btn btn-link nav-link text-white fw-medium mx-2 p-0 border-0" 
                   style={{ fontSize: '1rem', textDecoration: 'none' }}
-                  onClick={onLogin}
+                  onClick={handleLoginRedirect}
                 >
                   Login
                 </button>
@@ -81,6 +100,21 @@ const EVAALandingPage: React.FC<EVAALandingPageProps> = ({ onLogin, onSignup }) 
                   onClick={onSignup}
                 >
                   Sign Up
+                </button>
+              </li>
+               <li className="nav-item ms-3">
+                <button 
+                  className="btn fw-semibold px-4 py-2"
+                  style={{ 
+                    background: '#b80e74',
+                    border: 'none',
+                    borderRadius: '.5rem',
+                    color: 'white',
+                    fontSize: '0.95rem',
+                  }}
+                  onClick={onLogin}
+                >
+                  Admin
                 </button>
               </li>
             </ul>
@@ -147,7 +181,7 @@ const EVAALandingPage: React.FC<EVAALandingPageProps> = ({ onLogin, onSignup }) 
                     color: 'white',
                     fontSize: '1.1rem'
                   }}
-                  onClick={handleSignupRedirect}
+                  onClick={handleLoginRedirect}
                 >
                   Start Free Trial
                   <svg width="16" height="16" fill="currentColor" className="ms-1" viewBox="0 0 16 16">

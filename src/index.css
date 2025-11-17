@@ -28,7 +28,7 @@ body {
   background-color: var(--body-bg);
   font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.5;
-  color: var(--text-dark);
+  color: #300d21;
 }
 
 /* Custom Button Styles */
@@ -296,12 +296,12 @@ a:hover {
 
 /* Settings Dropdown Specific Styles */
 .btn-light.dropdown-toggle {
-  background-color: #f3f3f5 !important;
-  border: 1px solid #dee2e6 ;
+  background-color: #f3f3f5;
+  border: 1px solid #300d2126 !important;
 }
 
 .btn-light.dropdown-toggle:hover {
-  background-color: #e2e6ea !important;
+  background-color: #e2e6ea;
 }
 
 /* .btn-light.dropdown-toggle:focus {
@@ -358,4 +358,20 @@ a:hover {
 
 .border-primary-custom {
   border-color: var(--primary-color) !important;
+}
+
+.dropdown-color{
+  background-color: #f6f6f1 !important;
+}
+
+.text-dark{
+  color: #300d21 !important;
+}
+
+.text-muted{
+  color: #6b5b66 !important;
+}
+
+.form-control{
+  font-size: .85rem !important;
 }

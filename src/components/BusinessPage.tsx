@@ -135,20 +135,20 @@ const BusinessPage: React.FC = () => {
   const handleSubmit = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     // Map frontend fields to DB columns
-  const dbFields: any = {};
-  dbFields.organization_id = 1; // Set as needed or make dynamic
-  dbFields.business_name = form.businessName;
-  dbFields.is_enabled = 1;
-  dbFields.is_active = 1;
-  dbFields.create_by = 1;
-  dbFields.create_process = 1;
-  dbFields.update_by = 1;
-  dbFields.update_process = 1;
-  dbFields.dba_name = form.dbaName;
-  dbFields.address_line_one = form.addressLineOne;
-  dbFields.address_line_two = form.addressLineTwo;
-  dbFields.phone_number = form.phoneNumber ? parseInt(form.phoneNumber) : null;
-  dbFields.extension = form.extension;
+    const dbFields: any = {};
+    dbFields.organization_id = 1; // Set as needed or make dynamic
+    dbFields.business_name = form.businessName;
+    dbFields.is_enabled = 1;
+    dbFields.is_active = 1;
+    dbFields.create_by = 1;
+    dbFields.create_process = 1;
+    dbFields.update_by = 1;
+    dbFields.update_process = 1;
+    dbFields.dba_name = form.dbaName;
+    dbFields.address_line_one = form.addressLineOne;
+    dbFields.address_line_two = form.addressLineTwo;
+    dbFields.phone_number = form.phoneNumber ? parseInt(form.phoneNumber) : null;
+    dbFields.extension = form.extension;
 
     try {
       console.log('💾 Saving business data:', form);
@@ -240,219 +240,230 @@ const BusinessPage: React.FC = () => {
   };
 
   return (
-        <div className="container-fluid">
-          <h2 style={{ fontWeight: 700, fontSize: '2rem', marginBottom: 0 }}>Enterprise Optical Group - Businesses</h2>
-          <div style={{ color: '#666', marginBottom: '24px' }}>
-            Manage businesses under this organization/business group
-          </div>
-          <div className="business-card" style={{ background: '#fff', borderRadius: '1rem', boxShadow: '0 1px 4px rgba(0,0,0,0.04)', padding: '24px', maxWidth: '100%', margin: '0 auto', border: '1px solid #ddd' }}>
-            <div style={{ fontWeight: 600, fontSize: '1.1rem', marginBottom: 4 }}>Business Records</div>
-            <div style={{ color: '#666', marginBottom: '20px' }}>
-              Manage businesses and configure settings for each business
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', marginBottom: 20, gap: 16 }}>
-              <input
-                type="text"
-                placeholder="Search by business name..."
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-                style={{ flex: 1, padding: '10px 16px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '1rem' }}
-              />
-              <button
-                style={{ background: '#c8007f', color: '#fff', border: 'none', borderRadius: '8px', padding: '10px 20px', fontWeight: 600, fontSize: '1rem', cursor: 'pointer' }}
-                onClick={handleOpenModal}
-              >
-                Add New Business
-              </button>
-      {/* Modal for Add New Business */}
-      {showModal && (
-        <div className="modal show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }} tabIndex={-1}>
-          <div className="modal-dialog modal-dialog-centered" style={{ maxWidth: 900 }}>
-            <div className="modal-content" style={{ borderRadius: '1rem', border: 'none', position: 'relative' }}>
-              <div className="modal-header border-0 pb-0" style={{ alignItems: 'flex-start' }}>
-                <div>
-                  <h5 className="modal-title text-dark fw-bold" style={{ fontSize: '1.4rem' }}>Add New Business</h5>
-                  <div className="text-muted" style={{ fontSize: '1rem', marginTop: 2 }}>Configure business information and agent-specific settings</div>
-                </div>
-                <button type="button" className="btn-close" onClick={handleCloseModal} aria-label="Close"></button>
-              </div>
-              <form className="modal-body" style={{ padding: '32px 24px 24px 24px', height: '42rem', overflowY: 'auto', }}>
-              <div style={{ fontWeight: 600, fontSize: '1.1rem', marginBottom: 2 }}>Business Information</div>
-              <div style={{ color: '#888', fontSize: '1rem', marginBottom: 18 }}>Business details for healthcare operations</div>
-              <div>
-                <div style={{ background: '#faf9f5', borderRadius: 12, padding: '24px', margin: '24px 0 0 0', border: '1px solid #f3f1ea' }}>
-              <div style={{ display: 'flex', gap: 16, marginBottom: 12 }}>
-                <div style={{ flex: 1 }}>
-                <label style={{ fontWeight: 500 }}>Business Name</label><br />
-                <input name="businessName" value={form.businessName} onChange={handleInputChange} placeholder="Enter business name" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, marginBottom: 0, fontSize: '1rem' }} required />
-                </div>
-                <div style={{ flex: 1 }}>
-                <label style={{ fontWeight: 500 }}>DBA Name</label><br />
-                <input name="dbaName" value={form.dbaName} onChange={handleInputChange} placeholder="Doing Business As" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
-                </div>
-                <div style={{ flex: 1 }}>
-                <label style={{ fontWeight: 500 }}>Website</label><br />
-                <input name="website" value={form.website} onChange={handleInputChange} placeholder="https://example.com" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
-                </div>                
-              </div>
-                    <div style={{ display: 'flex', gap: 16, marginBottom: 12 }}>
-                        <div style={{ flex: 1 }}>
-                        <label style={{ fontWeight: 500 }}>Group NPI ID <span title="Group National Provider Identifier">&#9432;</span></label><br />
-                        <input name="groupNpiId" value={form.groupNpiId} onChange={handleInputChange} placeholder="Enter Group NPI ID" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
-                        </div>
-                        <div style={{ flex: 1 }}>
-                        <label style={{ fontWeight: 500 }}>Individual NPI <span title="Individual National Provider Identifier">&#9432;</span></label><br />
-                        <input name="individualNpi" value={form.individualNpi} onChange={handleInputChange} placeholder="Enter Individual NPI" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
-                        </div>
-                    </div>
-                    <div style={{ display: 'flex', gap: 16, marginBottom: 12 }}>
-                        <div style={{ flex: 1 }}>
-                        <label style={{ fontWeight: 500 }}>Individual NPIS <span title="Multiple Individual NPIs, comma separated">&#9432;</span></label><br />
-                        <input name="individualNpis" value={form.individualNpis} onChange={handleInputChange} placeholder="Enter Individual NPIS" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
-                        </div>
-                        <div style={{ flex: 1 }}>
-                        <label style={{ fontWeight: 500 }}>Tax Id</label><br />
-                        <input name="taxId" value={form.taxId} onChange={handleInputChange} placeholder="XX-XXXXXXXX" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
-                        </div>
-                    </div>
-          <div style={{ marginBottom: 12 }}>
-            <label style={{ fontWeight: 500 }}>Address Line 1</label><br />
-            <input name="addressLineOne" value={form.addressLineOne} onChange={handleInputChange} placeholder="Street address" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
-          </div>
-          <div style={{ marginBottom: 12 }}>
-            <label style={{ fontWeight: 500 }}>Address Line 2</label><br />
-            <input name="addressLineTwo" value={form.addressLineTwo} onChange={handleInputChange} placeholder="Apartment, suite, unit, etc. (optional)" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
-          </div>
-                    <div style={{ display: 'flex', gap: 16, marginBottom: 12 }}>
-                        <div style={{ flex: 1 }}>
-                        <label style={{ fontWeight: 500 }}>City</label><br />
-                        <input name="city" value={form.city} onChange={handleInputChange} placeholder="City" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
-                        </div>
-                        <div style={{ flex: 1 }}>
-                        <label style={{ fontWeight: 500 }}>State</label><br />
-                        <input name="state" value={form.state} onChange={handleInputChange} placeholder="Enter state" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
-                        </div>
-                        <div style={{ flex: 1 }}>
-                        <label style={{ fontWeight: 500 }}>Zip Code</label><br />
-                        <input name="zip" value={form.zip} onChange={handleInputChange} placeholder="XXXXX" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
-                        </div>
-                        <div style={{ flex: 1 }}>
-                        <label style={{ fontWeight: 500 }}>Country</label><br />
-                        <select name="country" value={form.country} onChange={handleInputChange} style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }}>
-                          <option>United States of America</option>
-                          <option>Canada</option>
-                          <option>United Kingdom</option>
-                          <option>India</option>
-                        </select>
-                        </div>
-                    </div>
-          <div style={{ display: 'flex', gap: 16, marginBottom: 12 }}>
-            <div style={{ flex: 1 }}>
-            <label style={{ fontWeight: 500 }}>Phone Number</label><br />
-            <input name="phoneNumber" value={form.phoneNumber} onChange={handleInputChange} placeholder="Enter phone number" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
-            </div>
-            <div style={{ flex: 1 }}>
-            <label style={{ fontWeight: 500 }}>Extension</label><br />
-            <input name="extension" value={form.extension} onChange={handleInputChange} placeholder="Extension" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
-            </div>
-          </div>
-                    <div style={{ marginBottom: 18 }}>
-                      <label style={{ fontWeight: 500 }}>Logo</label><br />
-                      <input
-                        name="logo"
-                        type="file"
-                        accept="image/png,image/jpeg,image/svg+xml"
-                        onChange={handleInputChange}
-                        className="form-control"
-                        style={{ marginTop: 2, marginBottom: 2, maxWidth: '100%' }}
-                      />
-                      <div style={{ color: '#888', fontSize: '0.95rem', marginTop: 2 }}>
-                        Upload your organization logo (PNG, JPG, or SVG)
-                      </div>
-                    </div>
-                </div>
-                {/* Agent-Specific Configuration Section */}
-                <div style={{ background: '#faf9f5', borderRadius: 12, padding: '24px', margin: '24px 0 0 0', border: '1px solid #f3f1ea' }}>
-                    <div style={{ fontWeight: 700, fontSize: '1.1rem', marginBottom: 2 }}>Agent-Specific Configuration</div>
-                    <div style={{ color: '#888', fontSize: '1rem', marginBottom: 18 }}>Configure module-specific settings for each AI agent</div>
-                    <div style={{ marginBottom: 14 }}>
-                    <label style={{ fontWeight: 500 }}>Select Agent</label><br />
-                    <select name="agent" value={form.agent} onChange={handleInputChange} style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }}>
-                        <option>Billing Assistant</option>
-                        <option>Eligibility Assistant</option>
-                        <option>Scheduling Assistant</option>
-                    </select>
-                    </div>
-                    <div style={{ marginBottom: 14 }}>
-                    <label style={{ fontWeight: 500 }}>Eligibility ID</label><br />
-                    <input name="eligibilityId" value={form.eligibilityId} onChange={handleInputChange} placeholder="Enter eligibility identifier" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
-                    </div>
-                    <div style={{ marginBottom: 14 }}>
-                    <label style={{ fontWeight: 500 }}>Clearinghouse ID</label><br />
-                    <input name="clearinghouseId" value={form.clearinghouseId} onChange={handleInputChange} placeholder="Enter clearinghouse identifier" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
-                    </div>
-                    <div style={{ marginBottom: 14 }}>
-                    <label style={{ fontWeight: 500 }}>Billing NPI <span title="Billing National Provider Identifier">&#9432;</span></label><br />
-                    <input name="billingNpi" value={form.billingNpi} onChange={handleInputChange} placeholder="Enter billing NPI number" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
-                    </div>
-                    <div style={{ marginBottom: 0 }}>
-                    <label style={{ fontWeight: 500 }}>Taxonomy Code</label><br />
-                    <input name="taxonomyCode" value={form.taxonomyCode} onChange={handleInputChange} placeholder="Enter taxonomy code" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
-                    </div>
-                </div>
-              </div>            
-              </form>
-              <div className="modal-footer border-0 pt-0" style={{ display: 'flex', justifyContent: 'flex-end', gap: 12, borderTop: '1px solid #f3f1ea', paddingTop: 18, marginTop: 24 }}>
-                <button type="button" className="btn btn-light" onClick={handleCloseModal}>Cancel</button>
-                <button type="button" className="btn btn-dark" style={{ background: '#c8007f', border: 'none' }} onClick={handleSubmit}>Save Changes</button>
-              </div>
-            </div>
+    <div className="container-fluid">
+      {/* Loader Overlay */}
+      {loading && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          background: 'rgba(255,255,255,0.7)',
+          zIndex: 2000,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          <div className="spinner-border text-primary" role="status" style={{ width: 60, height: 60 }}>
+            <span className="visually-hidden">Loading...</span>
           </div>
         </div>
       )}
-            </div>
-            <div style={{ marginBottom: 12, color: '#666', fontSize: '0.95rem' }}>
-              {loading ? 'Loading businesses...' : `Showing ${filteredBusinesses.length} of ${businesses.length} businesses`}
-              {error && <span style={{ color: 'red', marginLeft: 12 }}>{error}</span>}
-            </div>
-            <div style={{ overflowX: 'auto', border: '1px solid #ddd', borderRadius: '1rem' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', background: 'transparent' }}>
-                <thead>
-                  <tr style={{ background: '#faf9f5' }}>
-                    <th style={{ textAlign: 'left', padding: '12px 8px', fontWeight: 600, color: '#3a1d3c' }}>Business Name</th>
-                    <th style={{ textAlign: 'left', padding: '12px 8px', fontWeight: 600, color: '#3a1d3c' }}>Locations</th>
-                    <th style={{ textAlign: 'left', padding: '12px 8px', fontWeight: 600, color: '#3a1d3c' }}>Status</th>
-                    <th style={{ textAlign: 'right', padding: '12px 8px', fontWeight: 600, color: '#3a1d3c' }}>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredBusinesses.map((b) => (
-                    <tr key={b.business_id} style={{ borderBottom: '1px solid #f0e9e9' }}>
-                      <td style={{ padding: '12px 8px', color: '#3a1d3c', fontWeight: 500 }}>{b.business_name}</td>
-                      <td style={{ padding: '12px 8px', color: '#3a1d3c' }}>-</td>
-                      <td style={{ padding: '12px 8px' }}>
-                        {b.is_active ? (
-                          <span style={{ background: '#c8007f', color: '#fff', borderRadius: '12px', padding: '4px 16px', fontWeight: 600, fontSize: '0.95rem' }}>Active</span>
-                        ) : (
-                          <span style={{ background: '#f3f1ea', color: '#7a6c6c', borderRadius: '12px', padding: '4px 16px', fontWeight: 600, fontSize: '0.95rem' }}>Inactive</span>
-                        )}
-                      </td>
-                      <td style={{ padding: '12px 8px', textAlign: 'right' }}>
-                        <button
-                          style={{ background: '#f3f1ea', color: '#3a1d3c', border: 'none', borderRadius: '8px', padding: '6px 18px', fontWeight: 500, fontSize: '1rem', cursor: 'pointer', boxShadow: '0 1px 2px rgba(0,0,0,0.02)' }}
-                          onClick={() => handleEdit(b)}
-                        >
-                          Edit
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+      <div className='mb-4'>
+        <h5 className="fw-semibold text-dark mb-1">Enterprise Optical Group - Businesses</h5>
+        <p className="text-muted mb-0" style={{ fontSize: '.9rem' }}>
+          Manage businesses under this organization/business group
+        </p>
+      </div>
+      <div className="card p-4" style={{ borderRadius: '0.75rem', borderColor: '#300d2126' }}>
+        <div className='mb-3'>
+          <h6 className="fw-semibold mb-1" style={{ color: '#300d21' }}>Business Records</h6>
+          <p className="text-muted small mb-0">
+            Manage businesses and configure settings for each business
+          </p>
         </div>
-      );
-    };
+
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: 20, gap: 16 }}>
+          <input
+            type="text"
+            placeholder="Search by business name..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            style={{ flex: 1, padding: '10px 16px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '.85rem' }}
+          />
+          <button
+          className='px-3 py-2'
+            style={{ background: '#b80e74', color: '#fff', border: 'none', borderRadius: '8px', fontWeight: 500, fontSize: '.85rem', cursor: 'pointer' }}
+            onClick={handleOpenModal}
+          >
+            Add New Business
+          </button>
+          {/* Modal for Add New Business */}
+          {showModal && (
+            <div className="modal show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }} tabIndex={-1}>
+              <div className="modal-dialog modal-dialog-centered" style={{ maxWidth: '72rem' }}>
+                <div className="modal-content" style={{ borderRadius: '1rem', border: 'none', position: 'relative',    backgroundColor: '#f6f6f1' }}>
+                  <div className="modal-header border-0 pb-0" style={{ alignItems: 'flex-start' }}>
+                    <div className='mb-2'>
+                      <h5 className="modal-title text-dark fw-semibold" style={{ fontSize: '1rem' }}>Add New Business</h5>
+                      <div className="text-muted" style={{ fontSize: '.85rem', marginTop: 2 }}>Configure business information and agent-specific settings</div>
+                    </div>
+                    <button type="button" className="btn-close" onClick={handleCloseModal} aria-label="Close"></button>
+                  </div>
+                  <form className="modal-body" style={{height: '42rem', overflowY: 'auto', fontSize: '.85rem', color: '#300d21' }} onSubmit={handleSubmit}>                                    
+                      <div style={{ background: '#fff', borderRadius: 12, padding: '1rem', border: '1px solid #300d2126' }}>
+                        <div style={{ fontWeight: 600, fontSize: '.95rem', marginBottom: 2 }}>Business Information</div>
+                        <div className='text-muted' style={{ fontSize: '.85rem', marginBottom: 18 }}>Business details for healthcare operations</div>
+                        <div style={{ display: 'flex', gap: 16, marginBottom: 12, }}>
+                          <div style={{ flex: 1 }}>
+                            <label style={{ fontWeight: 500 }}>Business Name</label><br />
+                            <input className="form-control" name="businessName" value={form.businessName} onChange={handleInputChange} placeholder="Enter business name" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, marginBottom: 0, fontSize: '1rem' }} required />
+                          </div>
+                          <div style={{ flex: 1 }}>
+                            <label style={{ fontWeight: 500 }}>Doing Business As</label><br />
+                            <input className="form-control" name="dbaName" value={form.dbaName} onChange={handleInputChange} placeholder="Enter DBA name" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
+                          </div>
+                          <div style={{ flex: 1 }}>
+                            <label style={{ fontWeight: 500 }}>Website</label><br />
+                            <input className="form-control" name="website" value={form.website} onChange={handleInputChange} placeholder="https://example.com" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
+                          </div>
+                        </div>
+                        <div>
+                          <div style={{ marginBottom: 12 }}>
+                            <label style={{ fontWeight: 500 }}>Address Line 1</label><br />
+                            <input className="form-control" name="addressLineOne" value={form.addressLineOne} onChange={handleInputChange} placeholder="Street address" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
+                          </div>
+                          <div style={{ marginBottom: 12 }}>
+                            <label style={{ fontWeight: 500 }}>Address Line 2</label><br />
+                            <input className="form-control" name="addressLineTwo" value={form.addressLineTwo} onChange={handleInputChange} placeholder="Apartment, suite, unit, etc. (optional)" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
+                          </div>
+                        </div>
+                         <div style={{ display: 'flex', gap: 16, marginBottom: 12 }}>
+                          <div style={{ flex: 1 }}>
+                            <label style={{ fontWeight: 500 }}>City</label><br />
+                            <input className="form-control" name="city" value={form.city} onChange={handleInputChange} placeholder="City" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
+                          </div>
+                          <div style={{ flex: 1 }}>
+                            <label style={{ fontWeight: 500 }}>State</label><br />
+                            <input className="form-control" name="state" value={form.state} onChange={handleInputChange} placeholder="Enter state" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
+                          </div>
+                          <div style={{ flex: 1 }}>
+                            <label style={{ fontWeight: 500 }}>Zip Code</label><br />
+                            <input className="form-control" name="zip" value={form.zip} onChange={handleInputChange} placeholder="XXXXX" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
+                          </div>
+                          <div style={{ flex: 1 }}>
+                            <label style={{ fontWeight: 500 }}>Country</label><br />
+                            <div className="dropdown" style={{ width: '100%' }}>
+                              <button className="btn btn-light dropdown-toggle w-100 text-start" type="button" id="countryDropdown" data-bs-toggle="dropdown" aria-expanded="false" style={{ padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '.95rem' }}>
+                                {form.country || 'Select Country'}
+                              </button>
+                              <ul className="dropdown-menu w-100" aria-labelledby="countryDropdown" style={{ maxHeight: 200, overflowY: 'auto' }}>
+                                {['United States of America', 'Canada', 'United Kingdom', 'India', 'Australia', 'Germany', 'France', 'Italy', 'Spain', 'Brazil', 'Mexico', 'Japan', 'China', 'South Africa'].map((country) => (
+                                  <li key={country}>
+                                    <button className="dropdown-item" type="button" onClick={() => setForm(f => ({ ...f, country }))}>
+                                      {country}
+                                    </button>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                        <div style={{ display: 'flex', gap: 16, marginBottom: 12, borderBottom: '1px solid #300d2126', paddingBottom: '1.2rem' }}>
+                          <div style={{ flex: 1 }}>
+                            <label style={{ fontWeight: 500 }}>Phone Number</label><br />
+                            <input className="form-control" name="phoneNumber" value={form.phoneNumber} onChange={handleInputChange} placeholder="Enter phone number" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
+                          </div>
+                          <div style={{ flex: 1 }}>
+                            <label style={{ fontWeight: 500 }}>Extension</label><br />
+                            <input className="form-control" name="extension" value={form.extension} onChange={handleInputChange} placeholder="Extension" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
+                          </div>
+                        </div>
+                        <div>
+                          <div style={{fontSize: '.85rem'}}>
+                            Business Identifiers
+                          </div>
+                          <div className='text-muted' style={{ fontSize: '.75rem', marginBottom: 18 }}>
+                            Enter identifiers here if they are the same for all locations under this business. If identifiers vary by location, configure them at the location level instead.
+                          </div>                        
+                        </div>
+                        <div style={{ display: 'flex', gap: 16, marginBottom: 12 }}>
+                          <div style={{ flex: 1 }}>
+                            <label style={{ fontWeight: 500 }}>Group NPI ID <span title="Group National Provider Identifier">&#9432;</span></label><br />
+                            <input className="form-control" name="groupNpiId" value={form.groupNpiId} onChange={handleInputChange} placeholder="Enter Group NPI ID" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
+                          </div>
+                          <div style={{ flex: 1 }}>
+                            <label style={{ fontWeight: 500 }}>Individual NPI <span title="Individual National Provider Identifier">&#9432;</span></label><br />
+                            <input className="form-control" name="individualNpi" value={form.individualNpi} onChange={handleInputChange} placeholder="Enter Individual NPI" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
+                          </div>
+                        </div>
+                        <div style={{ display: 'flex', gap: 16, marginBottom: 12 }}>
+                          <div style={{ flex: 1 }}>
+                            <label style={{ fontWeight: 500 }}>Individual NPIS <span title="Multiple Individual NPIs, comma separated">&#9432;</span></label><br />
+                            <input className="form-control" name="individualNpis" value={form.individualNpis} onChange={handleInputChange} placeholder="Enter Individual NPIS" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
+                          </div>
+                          <div style={{ flex: 1 }}>
+                            <label style={{ fontWeight: 500 }}>Tax Id</label><br />
+                            <input className="form-control" name="taxId" value={form.taxId} onChange={handleInputChange} placeholder="XX-XXXXXXXX" style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid #ccc', marginTop: 2, fontSize: '1rem' }} />
+                          </div>
+                        </div>                                              
+                        <div style={{ marginBottom: 18 }}>
+                          <label style={{ fontWeight: 500 }}>Logo</label><br />
+                          <input className="form-control"
+                            name="logo"
+                            type="file"
+                            accept="image/png,image/jpeg,image/svg+xml"
+                            onChange={handleInputChange}
+                            style={{ marginTop: 2, marginBottom: 2, maxWidth: '100%' }}
+                          />
+                          <div className='text-muted' style={{ fontSize: '0.8rem', marginTop: 2 }}>
+                            Upload your organization logo (PNG, JPG, or SVG)
+                          </div>
+                        </div>  
+                      </div>
+                  </form>
+                  <div className="modal-footer border-0 pt-0" style={{ display: 'flex', justifyContent: 'flex-end', gap: 12, borderTop: '1px solid #f3f1ea', paddingTop: 18, marginTop: 24 }}>
+                    <button type="button" className="btn btn-light" onClick={handleCloseModal}>Cancel</button>
+                    <button type="button" className="btn btn-dark" style={{ background: '#c8007f', border: 'none' }} onClick={handleSubmit}>Save Changes</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+        <div style={{ marginBottom: 12, color: '#666', fontSize: '0.85rem' }}>
+          {loading ? 'Loading businesses...' : `Showing ${filteredBusinesses.length} of ${businesses.length} businesses`}
+          {error && <span style={{ color: 'red', marginLeft: 12 }}>{error}</span>}
+        </div>
+        <div style={{ overflowX: 'auto', border: '1px solid #ddd', borderRadius: '.5rem', fontSize: '.85rem' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', background: 'transparent' }}>
+            <thead>
+              <tr style={{ borderBottom: '1px solid #f0e9e9' }}>
+                <th style={{ textAlign: 'left', padding: '12px 8px', fontWeight: 600, color: '#300d21' }}>Business Name</th>
+                <th style={{ textAlign: 'left', padding: '12px 8px', fontWeight: 600, color: '#300d21' }}>Locations</th>
+                <th style={{ textAlign: 'left', padding: '12px 8px', fontWeight: 600, color: '#300d21' }}>Status</th>
+                <th style={{ textAlign: 'right', padding: '12px 8px', fontWeight: 600, color: '#300d21' }}>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredBusinesses.map((b) => (
+                <tr key={b.business_id} style={{ borderBottom: '1px solid #f0e9e9' }}>
+                  <td style={{ padding: '12px 8px', color: '#300d21', fontWeight: 500 }}>{b.business_name}</td>
+                  <td style={{ padding: '12px 8px', color: '#300d21' }}>-</td>
+                  <td style={{ padding: '12px 8px' }}>
+                    {b.is_active ? (
+                      <span className='px-2 py-1' style={{ background: '#c8007f', color: '#fff', borderRadius: '.5rem', fontWeight: 600, fontSize: '0.85rem' }}>Active</span>
+                    ) : (
+                      <span className='px-2 py-1' style={{ background: '#f3f1ea', color: '#7a6c6c', borderRadius: '.5rem', fontWeight: 600, fontSize: '0.85rem' }}>Inactive</span>
+                    )}
+                  </td>
+                  <td style={{ padding: '12px 8px', textAlign: 'right' }}>
+                    <button
+                      style={{ background: '#f6f6f1', color: '#300d21', border: '1px solid #300d2126', borderRadius: '8px', padding: '6px 18px', fontWeight: 500, fontSize: '0.85rem', cursor: 'pointer', boxShadow: '0 1px 2px rgba(0,0,0,0.02)' }}
+                      onClick={() => handleEdit(b)}
+                    >
+                      Edit
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default BusinessPage;

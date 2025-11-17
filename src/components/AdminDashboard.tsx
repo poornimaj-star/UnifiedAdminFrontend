@@ -82,7 +82,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout, onBackToMain,
       />
       
       {/* Main Layout */}
-      <div className="d-flex flex-grow-1" style={{ height: 'calc(100vh - 60px)' }}>
+      <div className="d-flex flex-grow-1" style={{ height: 'calc(100vh - 60px)', backgroundColor: '#f6f6f1' }}>
         {/* Sidebar */}
         <Sidebar 
           onNavigate={handleNavigate}
@@ -91,7 +91,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout, onBackToMain,
         />
         
         {/* Main Content */}
-        <main className="flex-grow-1 p-4 overflow-auto bg-white">
+        <main className="flex-grow-1 p-4 overflow-auto">
           {renderContent()}
         </main>
       </div>

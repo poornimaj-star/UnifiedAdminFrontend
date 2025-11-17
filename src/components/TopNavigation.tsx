@@ -112,7 +112,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ onLogout, onNavigate, sel
   // Fallback to static list if API fails    
 
   return (
-    <header className="navbar navbar-expand-lg bg-white border-bottom shadow-sm" style={{ height: '60px', zIndex: 1030 }}>
+    <header className="navbar navbar-expand-lg bg-white" style={{ height: '60px', zIndex: 1030, borderBottom: '1px solid #300d2126' }}>
       <div className="container-fluid">
         <div className="d-flex align-items-center gap-3">
           <img 
@@ -126,7 +126,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ onLogout, onNavigate, sel
           {/* Organization Dropdown */}
           <div className="dropdown">
             <button 
-              className="btn btn-light dropdown-toggle d-flex align-items-center gap-2" 
+              className="btn btn-light dropdown-toggle d-flex align-items-center gap-2 bg-transparent" 
               type="button" 
               data-bs-toggle="dropdown" 
               aria-expanded="false"
@@ -134,7 +134,6 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ onLogout, onNavigate, sel
                 minWidth: '200px', 
                   justifyContent: 'space-between',
                   backgroundColor: '#f3f3f5',
-                  border: 'none',
                   boxShadow: 'none'
               }}
             >
@@ -168,14 +167,12 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ onLogout, onNavigate, sel
           {/* Assistant Dropdown */}
           <div className="dropdown">
             <button 
-              className="btn btn-light dropdown-toggle d-flex align-items-center gap-2" 
+              className="btn btn-light dropdown-toggle d-flex align-items-center gap-2 dropdown-color" 
               type="button" 
               data-bs-toggle="dropdown" 
               aria-expanded="false"
               style={{  
                 justifyContent: 'space-between',
-                backgroundColor: '#f8f9fa',
-                border: '1px solid #e9ecef'
               }}
             >
               <span className="text-start">
@@ -253,22 +250,42 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ onLogout, onNavigate, sel
                   </button>
                 </li>
                 <li>
-                  <button className="dropdown-item d-flex align-items-center gap-2" onClick={() => console.log('Organization/Business clicked')}>          
-                    Organization/Business
+                  <button className="dropdown-item d-flex align-items-center gap-2" onClick={() => {
+                    onNavigate?.('organization-business');
+                    setIsSettingsDropdownOpen(false);
+                  }}>          
+                    Organization/Business Group
                   </button>
                 </li>
                 <li>
-                  <button className="dropdown-item d-flex align-items-center gap-2" onClick={() => console.log('Locations clicked')}>                  
+                  <button className="dropdown-item d-flex align-items-center gap-2" onClick={() => {
+                    onNavigate?.('business');
+                    setIsSettingsDropdownOpen(false);
+                  }}>          
+                    Business
+                  </button>
+                </li>
+                <li>
+                  <button className="dropdown-item d-flex align-items-center gap-2"onClick={() => {
+                    onNavigate?.('locations');
+                    setIsSettingsDropdownOpen(false);
+                  }}>                  
                     Locations
                   </button>
                 </li>
                 <li>
-                  <button className="dropdown-item d-flex align-items-center gap-2" onClick={() => console.log('Providers clicked')}>                    
+                  <button className="dropdown-item d-flex align-items-center gap-2" onClick={() => {
+                    onNavigate?.('providers');
+                    setIsSettingsDropdownOpen(false);
+                  }}>                    
                     Providers
                   </button>
                 </li>
                 <li>
-                  <button className="dropdown-item d-flex align-items-center gap-2" onClick={() => console.log('Insurances clicked')}>                    
+                  <button className="dropdown-item d-flex align-items-center gap-2" onClick={() => {
+                    onNavigate?.('insurances');
+                    setIsSettingsDropdownOpen(false);
+                  }}>                    
                     Insurances
                   </button>
                 </li>

@@ -15,16 +15,21 @@ const OrganizationBusinessSetup: React.FC = () => {
   // Add custom styles to override Bootstrap
   const customRadioStyles = `
     .custom-radio.form-check-input:checked {
-      background-color: #e91e63 !important;
-      border-color: #e91e63 !important;
+      background-color: #b80e74
+ !important;
+      border-color: #b80e74
+ !important;
     }
     .custom-radio.form-check-input:focus {
-      border-color: #e91e63 !important;
+      border-color: #b80e74
+ !important;
       box-shadow: 0 0 0 0.25rem rgba(233, 30, 99, 0.25) !important;
     }
     .custom-radio[type="checkbox"]:checked {
-      background-color: #e91e63 !important;
-      border-color: #e91e63 !important;
+      background-color: #b80e74
+ !important;
+      border-color: #b80e74
+ !important;
     }
   `;
 
@@ -214,28 +219,28 @@ const OrganizationBusinessSetup: React.FC = () => {
   };
 
   return (
-    <div className="container-fluid">
+    <div className="container-fluid" style={{height: 'calc(100vh - 7rem)'}}>
       {/* Page Header */}
       <div className="mb-4">
-        <h1 className="h4 fw-semibold text-dark mb-1">Organization / Business Group</h1>
-        <p className="text-muted mb-0">Configure your organization/business group details</p>
+        <h5 className="fw-semibold text-dark mb-1">Organization/Business Group</h5>
+        <p className="text-muted mb-0" style={{fontSize: '.9rem'}}>Configure your organization/business group details</p>
       </div>
 
       {/* Business Information Section */}
-      <div className="card shadow-sm border-0 mb-4" style={{ borderRadius: '0.75rem' }}>
+      <div className="card mb-4" style={{ borderRadius: '0.75rem', borderColor:'#300d2126' }}>
         <div className="card-body">
           <div className="mb-4">
-            <h5 className="fw-semibold mb-1">Organization / Business Group Information</h5>
+            <h6 className="fw-semibold mb-1" style={{color: '#300d21'}}>Organization/Business Group Information</h6>
             <p className="text-muted small mb-0">Basic organization details at the Corporation level</p>
           </div>
 
           
-            <form onSubmit={handleSave}>
-              <div className="mb-4">
+            <form onSubmit={handleSave} style={{fontSize: '.85rem'}}>
+              <div className="mb-3">
                 {/* Organization Name and Tax ID */}
-                <div style={{ display: 'flex', gap: '16px', marginBottom: '16px' }}>
+                <div style={{ display: 'flex', gap: '16px', marginBottom: '10px' }}>
                   <div style={{ flex: 1 }}>
-                    <label className="form-label fw-medium text-dark mb-2">Organization / Business Group Name</label>
+                    <label className="form-label fw-medium text-dark mb-2">Organization/Business Group Name</label>
                     <input 
                       type="text"
                       name="organizationName"
@@ -273,7 +278,7 @@ const OrganizationBusinessSetup: React.FC = () => {
                 </div>
                 
                 {/* Country */}
-                <div style={{ marginBottom: '16px' }}>
+                <div style={{ marginBottom: '10px' }}>
                   <label className="form-label fw-medium text-dark mb-2">Country</label>
                   <div ref={dropdownRef} style={{ position: 'relative' }}>
                     <button
@@ -350,7 +355,7 @@ const OrganizationBusinessSetup: React.FC = () => {
                 </div>
                 
                 {/* Address Line 1 */}
-                <div style={{ marginBottom: '16px' }}>
+                <div style={{ marginBottom: '10px' }}>
                   <label className="form-label fw-medium text-dark mb-2">Address Line 1</label>
                   <input 
                     type="text"
@@ -370,7 +375,7 @@ const OrganizationBusinessSetup: React.FC = () => {
                 </div>
                 
                 {/* Address Line 2 */}
-                <div style={{ marginBottom: '16px' }}>
+                <div style={{ marginBottom: '10px' }}>
                   <label className="form-label fw-medium text-dark mb-2">Address Line 2</label>
                   <input 
                     type="text"
@@ -390,7 +395,7 @@ const OrganizationBusinessSetup: React.FC = () => {
                 </div>
                 
                 {/* City, State, Zip Code */}
-                <div style={{ display: 'flex', gap: '16px', marginBottom: '16px' }}>
+                <div style={{ display: 'flex', gap: '16px', marginBottom: '10px' }}>
                   <div style={{ flex: 1 }}>
                     <label className="form-label fw-medium text-dark mb-2">City</label>
                     <input 
@@ -449,28 +454,33 @@ const OrganizationBusinessSetup: React.FC = () => {
               </div>
 
               {/* Action Buttons */}
-              <div className="d-flex justify-content-end gap-2 mt-4">
+              <div className="d-flex justify-content-end gap-2 mt-3">
                 <button 
                   type="button" 
-                  className="btn btn-outline-secondary px-4 py-2"
+                  className="btn btn-outline-secondary px-3 py-2"
                   style={{
-                    border: '1px solid #6c757d',
-                    color: '#6c757d',
-                    borderRadius: '6px'
+                    border: '1px solid #300d2126',
+                    color: '#300d21',
+                    borderRadius: '6px',
+                    fontSize: '.85rem',
+                    fontWeight: 500,
+                    backgroundColor:'#f6f6f1'
                   }}
                 >
                   Cancel
                 </button>
                 <button 
                   type="submit" 
-                  className="btn text-white px-4 py-2"
+                  className="btn text-white px-3 py-2"
                   disabled={loading}
                   style={{ 
-                    backgroundColor: loading ? '#6c757d' : '#e91e63',
+                    backgroundColor: loading ? '#b80e74' : '#b80e74',
                     border: 'none',
                     borderRadius: '6px',
                     opacity: loading ? 0.6 : 1,
-                    cursor: loading ? 'not-allowed' : 'pointer'
+                    cursor: loading ? 'not-allowed' : 'pointer',
+                    fontSize: '.85rem',
+                    fontWeight: 500
                   }}
                 >
                   {loading ? (
@@ -492,14 +502,14 @@ const OrganizationBusinessSetup: React.FC = () => {
       </div>
 
       {/* Virtual Assistant Configuration Section */}
-      <div className="card shadow-sm border-0 mb-4" style={{ borderRadius: '0.75rem' }}>
+      <div className="card mb-4" style={{ borderRadius: '0.75rem', borderColor:'#300d2126' }}>
         <div className="card-body">
-          <div className="mb-4">
-            <h5 className="fw-semibold mb-1 text-dark">Virtual Assistant Configuration</h5>
-            <p className="text-muted small mb-0">Configure how Virtual Assistants are deployed across your organization</p>
+          <div className="mb-3">
+            <h6 className="fw-semibold mb-1 text-dark">Virtual Assistant Configuration</h6>
+            <p className="text-muted small mb-0" style={{fontSize: '.9rem'}}>Configure how Virtual Assistants are deployed across your organization</p>
           </div>
           
-          <div className="mb-4">
+          <div className="mb-4" style={{fontSize: '.85rem'}}>
             <h6 className="fw-medium text-dark mb-3">Agent Deployment Model</h6>
             
             {/* Single Virtual Assistant Option */}
@@ -527,7 +537,7 @@ const OrganizationBusinessSetup: React.FC = () => {
             </div>
             
             {/* Separate Virtual Assistant Option */}
-            <div className="mb-3">
+            <div className="mb-0">
               <div className="form-check d-flex align-items-start">
                 <input 
                   className="form-check-input custom-radio mt-1" 

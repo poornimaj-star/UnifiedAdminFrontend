@@ -241,6 +241,25 @@ const ProvidersManagement: React.FC = () => {
 
   return (
     <div className="container-fluid">
+      {/* Loader Overlay */}
+      {isLoading && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          background: 'rgba(255,255,255,0.7)',
+          zIndex: 2000,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          <div className="spinner-border text-primary" role="status" style={{ width: 60, height: 60 }}>
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      )}
       {/* Page Header */}
       <div className="mb-4">
         <h1 className="h4 fw-semibold text-dark mb-1">VisionCare Optical Centers - Providers Data</h1>
@@ -292,14 +311,7 @@ const ProvidersManagement: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                {isLoading ? (
-                  <tr>
-                    <td colSpan={5} className="text-center py-4">
-                      <div className="spinner-border spinner-border-sm me-2" role="status"></div>
-                      Loading providers...
-                    </td>
-                  </tr>
-                ) : error ? (
+                {error ? (
                   <tr>
                     <td colSpan={5} className="text-center py-4">
                       <div className="text-warning">
